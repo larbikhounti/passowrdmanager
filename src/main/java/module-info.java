@@ -1,6 +1,7 @@
 module com.password.manager {
     requires javafx.controls;
     requires javafx.fxml;
+    requires com.password.manager;
 
     opens com.password.manager to javafx.fxml;
     exports com.password.manager;
