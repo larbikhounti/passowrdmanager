@@ -182,7 +182,7 @@ public class CredentialController implements Initializable {
         String selectedType = credentialTypeComboBox.getValue();
 
         if (selectedType == null) {
-            showAlert("Error", "Please select a credential type");
+            Helpers.showAlert("Error", "Please select a credential type", Alert.AlertType.ERROR);
             return;
         }
 
@@ -205,7 +205,7 @@ public class CredentialController implements Initializable {
         String password = passwordField.getText().trim();
 
         if (url.isEmpty() || email.isEmpty() || password.isEmpty()) {
-            showAlert("Error", "All fields are required");
+            Helpers.showAlert("Error", "All fields are required", Alert.AlertType.ERROR);
             return;
         }
 
@@ -216,7 +216,7 @@ public class CredentialController implements Initializable {
 
         CredentialsFactory.getCredentialService("EMAIL").addCredential(emailEntity);
 
-        showAlert("Success", "Password saved successfully!");
+        Helpers.showAlert("Success", "Password saved successfully!", Alert.AlertType.INFORMATION);
     }
 
     private void saveCreditCard() {
@@ -226,7 +226,7 @@ public class CredentialController implements Initializable {
         String cvv = cvvField.getText().trim();
 
         if (cardNumber.isEmpty() || cardHolder.isEmpty() || expiryDate.isEmpty() || cvv.isEmpty()) {
-            showAlert("Error", "All fields are required");
+            Helpers.showAlert("Error", "All fields are required", Alert.AlertType.ERROR);
             return;
         }
 
@@ -237,14 +237,14 @@ public class CredentialController implements Initializable {
         System.out.println("Expiry Date: " + expiryDate);
         System.out.println("CVV: " + cvv);
 
-        showAlert("Success", "Credit card saved successfully!");
+        Helpers.showAlert("Success", "Credit card saved successfully!", Alert.AlertType.INFORMATION);
     }
 
     private void saveNote() {
         String note = noteTextArea.getText().trim();
 
         if (note.isEmpty()) {
-            showAlert("Error", "Note cannot be empty");
+            Helpers.showAlert("Error", "Note cannot be empty", Alert.AlertType.ERROR);
             return;
         }
 
@@ -252,7 +252,7 @@ public class CredentialController implements Initializable {
         System.out.println("Saving Note:");
         System.out.println("Note: " + note);
 
-        showAlert("Success", "Note saved successfully!");
+        Helpers.showAlert("Success", "Note saved successfully!", Alert.AlertType.INFORMATION);
     }
 
     @FXML
@@ -268,13 +268,5 @@ public class CredentialController implements Initializable {
     private void closeWindow() {
         Stage stage = (Stage) saveButton.getScene().getWindow();
         stage.close();
-    }
-
-    private void showAlert(String title, String message) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
     }
 }
