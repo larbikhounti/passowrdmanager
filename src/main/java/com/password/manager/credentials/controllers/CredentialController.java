@@ -218,7 +218,7 @@ public class CredentialController implements Initializable {
         try {
             Objects.requireNonNull(CredentialsFactory.getCredentialService("EMAIL")).addCredential(emailEntity);
             Helpers.showAlert("Success", "Password saved successfully!", Alert.AlertType.INFORMATION);
-        }catch (NullPointerException e){
+        } catch (NullPointerException e) {
             Helpers.showAlert("Error", "Failed to save credential", Alert.AlertType.ERROR);
         }
     }
@@ -248,10 +248,10 @@ public class CredentialController implements Initializable {
 
     @FXML
     public void onCancel(ActionEvent event) {
-        try{
-            Helpers.switchScene(event,"/com/password/manager/auth/dashboard_view.fxml");
+        try {
+            Helpers.switchScene(event, "/com/password/manager/auth/dashboard_view.fxml");
 
-        } catch (Exception e){
+        } catch (Exception e) {
             Helpers.Logger("Error closing window: " + e.getMessage(), "ERROR");
         }
     }
