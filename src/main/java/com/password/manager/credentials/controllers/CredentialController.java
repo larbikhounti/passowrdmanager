@@ -14,6 +14,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.net.URL;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class CredentialController implements Initializable {
@@ -214,9 +215,12 @@ public class CredentialController implements Initializable {
         emailEntity.setPassword(password);
         emailEntity.setUrl(url);
 
-        CredentialsFactory.getCredentialService("EMAIL").addCredential(emailEntity);
-
-        Helpers.showAlert("Success", "Password saved successfully!", Alert.AlertType.INFORMATION);
+        try {
+            Objects.requireNonNull(CredentialsFactory.getCredentialService("EMAIL")).addCredential(emailEntity);
+            Helpers.showAlert("Success", "Password saved successfully!", Alert.AlertType.INFORMATION);
+        }catch (NullPointerException e){
+            Helpers.showAlert("Error", "Failed to save credential", Alert.AlertType.ERROR);
+        }
     }
 
     private void saveCreditCard() {
@@ -229,14 +233,6 @@ public class CredentialController implements Initializable {
             Helpers.showAlert("Error", "All fields are required", Alert.AlertType.ERROR);
             return;
         }
-
-        // TODO: Implement actual save logic
-        System.out.println("Saving Credit Card:");
-        System.out.println("Card Number: " + cardNumber);
-        System.out.println("Card Holder: " + cardHolder);
-        System.out.println("Expiry Date: " + expiryDate);
-        System.out.println("CVV: " + cvv);
-
         Helpers.showAlert("Success", "Credit card saved successfully!", Alert.AlertType.INFORMATION);
     }
 
@@ -247,11 +243,6 @@ public class CredentialController implements Initializable {
             Helpers.showAlert("Error", "Note cannot be empty", Alert.AlertType.ERROR);
             return;
         }
-
-        // TODO: Implement actual save logic
-        System.out.println("Saving Note:");
-        System.out.println("Note: " + note);
-
         Helpers.showAlert("Success", "Note saved successfully!", Alert.AlertType.INFORMATION);
     }
 
