@@ -15,4 +15,8 @@ module com.password.manager {
 
     exports com.password.manager.credentials.controllers;
     opens com.password.manager.credentials.controllers to javafx.fxml;
+
+    exports com.password.manager.dashboard.controllers;
+    opens com.password.manager.dashboard.controllers to javafx.fxml;
+
 }
