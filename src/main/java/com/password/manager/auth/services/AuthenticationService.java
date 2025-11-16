@@ -1,5 +1,8 @@
 package com.password.manager.auth.services;
 
+import com.password.manager.auth.passwordHandler.PasswordStorage;
+import com.password.manager.utils.Helpers;
+
 public class AuthenticationService {
     //
     public boolean login(String password) {
@@ -14,15 +17,17 @@ public class AuthenticationService {
 
     public boolean changePassword(String oldPassword, String newPassword) {
         // TODO Change password logic
-        System.out.println("Changing password from " + oldPassword + " to " + newPassword);
+        System.out.printf("Changing password from %s to %s " ,oldPassword,  newPassword);
         return true;
     }
 
     private boolean checkPassword(String password) {
-        String temp = "password"; // Placeholder for actual password check
-
-        // TODO Check password logic
-        return password.equals(temp);
+        try {
+            return PasswordStorage.verifyPassword(password);
+        } catch (Exception e) {
+            Helpers.Logger("Password verification error: " + e.getMessage(), "ERROR");
+            throw new RuntimeException(e);
+        }
     }
 
     private boolean checkAttempts() {

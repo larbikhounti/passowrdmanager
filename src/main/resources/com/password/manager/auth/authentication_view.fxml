@@ -6,9 +6,10 @@
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.geometry.Insets?>
 
+<?import javafx.scene.control.Spinner?>
 <VBox alignment="CENTER" spacing="20.0" xmlns="http://javafx.com/javafx/8.0.171"
       xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.password.manager.auth.controllers.AuthenticationController"
-        style="-fx-background-color: black;">
+      style="-fx-background-color: #ffffff;">
 
     <padding>
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
@@ -16,4 +17,6 @@
     <Label text="Enter your password:" style="-fx-text-fill: white"/>
     <PasswordField fx:id="passwordField" promptText="Password" maxWidth="200"/>
     <Button text="Login" onAction="#handleLoginButtonAction"/>
+
+    <Label text="password is incorrect" fx:id="feedbackLabel" visible="false" style="-fx-text-fill: #ff0000"/>
 </VBox>

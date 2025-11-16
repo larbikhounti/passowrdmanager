@@ -1,5 +1,6 @@
 package com.password.manager;
 
+import com.password.manager.auth.passwordHandler.PasswordStorage;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -13,11 +14,15 @@ import java.io.IOException;
  */
 public class App extends Application {
 
-    private static Scene scene;
+    public static Scene scene;
 
     @Override
     public void start(Stage stage) throws IOException {
-        scene = new Scene(loadFXML("auth/authentication"), 640, 480);
+        if(PasswordStorage.isMasterPasswordSet()){
+            scene = new Scene(loadFXML("auth/authentication_view"), 640, 480);
+        }else{
+            scene = new Scene(loadFXML("auth/setPassword_view"), 640, 480);
+        }
         stage.setScene(scene);
         stage.show();
     }
@@ -26,7 +31,7 @@ public class App extends Application {
         scene.setRoot(loadFXML(fxml));
     }
 
-    private static Parent loadFXML(String fxml) throws IOException {
+    public static Parent loadFXML(String fxml) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource(fxml + ".fxml"));
         return fxmlLoader.load();
     }

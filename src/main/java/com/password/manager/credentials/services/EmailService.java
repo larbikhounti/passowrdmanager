@@ -24,6 +24,10 @@ public class EmailService implements ICredential {
         return false;
     }
 
+    public boolean checkPasswordStrength(String password) {
+        return false;
+    }
+
     @Override
     public Entity[] getAllCredentials() {
         return new Entity[0];
