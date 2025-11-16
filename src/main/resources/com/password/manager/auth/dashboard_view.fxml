@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<BorderPane prefHeight="600.0" prefWidth="900.0" style="-fx-background-color: #2d2d2d;" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.password.manager.credentials.controllers.DashboardController">
+<BorderPane prefHeight="600.0" prefWidth="900.0" style="-fx-background-color: #2d2d2d;" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.password.manager.dashboard.controllers.DashboardController">
 
     <!-- Left Sidebar -->
     <left>
@@ -26,8 +26,8 @@
             <HBox alignment="CENTER_LEFT" spacing="10.0" style="-fx-background-color: #333333; -fx-background-radius: 8; -fx-padding: 10; -fx-cursor: hand;">
 
                 <VBox>
-                    <Label text="Codes" style="-fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 14px;" />
-                    <Label text="0" style="-fx-text-fill: #888888; -fx-font-size: 11px;" />
+                    <Label text="Email" style="-fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 14px;" />
+                    <Label text="0" fx:id="emailsCredentialCount" style="-fx-text-fill: #888888; -fx-font-size: 11px;" />
                 </VBox>
             </HBox>
 
