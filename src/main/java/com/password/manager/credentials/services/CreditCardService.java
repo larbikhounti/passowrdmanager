@@ -3,6 +3,8 @@ package com.password.manager.credentials.services;
 import com.password.manager.credentials.base.Entity;
 import com.password.manager.credentials.contracts.ICredential;
 
+import java.util.ArrayList;
+
 public class CreditCardService implements ICredential {
     @Override
     public boolean addCredential(Entity credential) {
@@ -20,12 +22,12 @@ public class CreditCardService implements ICredential {
     }
 
     @Override
-    public boolean getCredential(int id) {
-        return false;
+    public Entity getCredential(int id) {
+        return null;
     }
 
     @Override
-    public Entity[] getAllCredentials() {
-        return new Entity[0];
+    public ArrayList<Entity> getAllCredentials() {
+        return null;
     }
 }

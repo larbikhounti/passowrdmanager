@@ -3,6 +3,8 @@ package com.password.manager.credentials.services;
 import com.password.manager.credentials.base.Entity;
 import com.password.manager.credentials.contracts.ICredential;
 
+import java.util.ArrayList;
+
 public class NoteService implements ICredential {
 
     @Override
@@ -21,12 +23,12 @@ public class NoteService implements ICredential {
     }
 
     @Override
-    public boolean getCredential(int id) {
-        return false;
+    public Entity getCredential(int id) {
+        return null;
     }
 
     @Override
-    public Entity[] getAllCredentials() {
-        return new Entity[0];
+    public ArrayList<Entity> getAllCredentials() {
+        return null;
     }
 }

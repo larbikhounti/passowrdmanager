@@ -20,7 +20,7 @@ public class Helpers {
     public static void switchScene(ActionEvent event, String fxml) throws IOException {
         Parent root = FXMLLoader.load(Objects.requireNonNull(Helpers.class.getResource(fxml)));
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        Scene scene = new Scene(root,640, 480);
+        Scene scene = new Scene(root, 1000, 600);
         stage.setScene(scene);
         stage.show();
     }

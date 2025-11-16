@@ -2,6 +2,8 @@ package com.password.manager.credentials.contracts;
 
 import com.password.manager.credentials.base.Entity;
 
+import java.util.ArrayList;
+
 public interface ICredential {
     public boolean addCredential(Entity credential);
 
@@ -9,7 +11,7 @@ public interface ICredential {
 
     public boolean removeCredential(int id);
 
-    public boolean getCredential(int id);
+    public Entity getCredential(int id);
 
-    public Entity[] getAllCredentials();
+    public ArrayList<Entity> getAllCredentials();
 }

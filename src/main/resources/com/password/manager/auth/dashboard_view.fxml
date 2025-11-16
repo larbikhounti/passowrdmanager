@@ -3,11 +3,108 @@
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<VBox alignment="CENTER" prefHeight="405.0" prefWidth="552.0" spacing="20.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.password.manager.credentials.controllers.DashboardController">
+<BorderPane prefHeight="600.0" prefWidth="900.0" style="-fx-background-color: #2d2d2d;" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.password.manager.credentials.controllers.DashboardController">
 
-    <padding>
-        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-    </padding>
-    <Label style="-fx-text-fill: #000000" text="this is dashboard"  />
-</VBox>
+    <!-- Left Sidebar -->
+    <left>
+        <VBox prefWidth="220.0" spacing="10.0" style="-fx-background-color: #252525; -fx-padding: 10;">
+            <padding>
+                <Insets top="10.0" bottom="10.0" left="10.0" right="10.0" />
+            </padding>
+
+            <!-- Category Buttons -->
+            <HBox alignment="CENTER_LEFT" spacing="10.0" style="-fx-background-color: #0066cc; -fx-background-radius: 8; -fx-padding: 10; -fx-cursor: hand;">
+                <Label text="🔑" style="-fx-text-fill: white; -fx-font-size: 18px;" />
+                <VBox>
+                    <Label text="All" style="-fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 14px;" />
+                    <Label text="55 Items" style="-fx-text-fill: #b3d9ff; -fx-font-size: 11px;" />
+                </VBox>
+            </HBox>
+
+            <HBox alignment="CENTER_LEFT" spacing="10.0" style="-fx-background-color: #333333; -fx-background-radius: 8; -fx-padding: 10; -fx-cursor: hand;">
+
+                <VBox>
+                    <Label text="Codes" style="-fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 14px;" />
+                    <Label text="0" style="-fx-text-fill: #888888; -fx-font-size: 11px;" />
+                </VBox>
+            </HBox>
+
+            <HBox alignment="CENTER_LEFT" spacing="10.0" style="-fx-background-color: #333333; -fx-background-radius: 8; -fx-padding: 10; -fx-cursor: hand;">
+
+                <VBox>
+                    <Label text="Credit Cards" style="-fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 14px;" />
+                    <Label text="146" style="-fx-text-fill: #888888; -fx-font-size: 11px;" />
+                </VBox>
+            </HBox>
+
+            <HBox alignment="CENTER_LEFT" spacing="10.0" style="-fx-background-color: #333333; -fx-background-radius: 8; -fx-padding: 10; -fx-cursor: hand;">
+
+                <VBox>
+                    <Label text="Notes" style="-fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 14px;" />
+                    <Label text="8" style="-fx-text-fill: #888888; -fx-font-size: 11px;" />
+                </VBox>
+            </HBox>
+
+<!--            <HBox alignment="CENTER_LEFT" spacing="10.0" style="-fx-background-color: #333333; -fx-background-radius: 8; -fx-padding: 10; -fx-cursor: hand;">-->
+
+<!--                <VBox>-->
+<!--                    <Label text="Deleted" style="-fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 14px;" />-->
+<!--                    <Label text="0" style="-fx-text-fill: #888888; -fx-font-size: 11px;" />-->
+<!--                </VBox>-->
+<!--            </HBox>-->
+
+            <VBox.margin>
+                <Insets top="10.0" />
+            </VBox.margin>
+
+            <Label text="Shared Groups" style="-fx-text-fill: #666666; -fx-font-size: 12px; -fx-padding: 10 0 0 10;" />
+        </VBox>
+    </left>
+
+    <!-- Center Content -->
+    <center>
+        <BorderPane style="-fx-background-color: #1e1e1e;">
+            <top>
+                <VBox spacing="10.0" style="-fx-background-color: #252525; -fx-padding: 15;">
+                    <HBox alignment="CENTER_LEFT" spacing="10.0">
+                        <Label text="All" style="-fx-text-fill: white; -fx-font-size: 18px; -fx-font-weight: bold;" />
+                        <Region HBox.hgrow="ALWAYS" />
+
+                        <Button onAction="#showCreateScene" text="+" style="-fx-background-color: transparent; -fx-text-fill: #888888; -fx-cursor: hand; -fx-font-size: 20px;" />
+                    </HBox>
+                    <Label text="55 Items" style="-fx-text-fill: #888888; -fx-font-size: 12px;" />
+
+                    <TextField promptText="Search" style="-fx-background-color: #1e1e1e; -fx-text-fill: white; -fx-prompt-text-fill: #666666; -fx-background-radius: 5; -fx-border-color: #0066cc; -fx-border-radius: 5; -fx-padding: 8;" />
+                </VBox>
+            </top>
+
+            <center>
+                <ScrollPane   fitToWidth="true" style="-fx-background-color: #1e1e1e; -fx-background: #1e1e1e;">
+                    <VBox spacing="0.0" fx:id="credentialsContainer" style="-fx-background-color: #1e1e1e;">
+<!--                        &lt;!&ndash; Password Items List &ndash;&gt;-->
+<!--                        <HBox alignment="CENTER_LEFT" spacing="15.0" style="-fx-background-color: #252525; -fx-padding: 12; -fx-cursor: hand;">-->
+<!--                            <Label text="🟧" style="-fx-font-size: 24px;" />-->
+<!--                            <VBox spacing="2.0">-->
+<!--                                <Label text="Alibaba.com" style="-fx-text-fill: white; -fx-font-size: 14px; -fx-font-weight: bold;" />-->
+<!--                                <Label text="mohamed Khounti" style="-fx-text-fill: #888888; -fx-font-size: 12px;" />-->
+<!--                            </VBox>-->
+<!--                        </HBox>-->
+
+<!--                        <Separator style="-fx-background-color: #1e1e1e;" />-->
+                    </VBox>
+                </ScrollPane>
+            </center>
+        </BorderPane>
+    </center>
+
+    <!-- Right Panel - Empty State -->
+    <right>
+        <VBox alignment="CENTER" prefWidth="350.0" spacing="15.0" style="-fx-background-color: #2d2d2d;">
+            <Label text="🔑" style="-fx-font-size: 60px; -fx-text-fill: #555555;" />
+            <Label text="No Item Selected" style="-fx-text-fill: #bbbbbb; -fx-font-size: 18px; -fx-font-weight: bold;" />
+        </VBox>
+    </right>
+
+</BorderPane>
