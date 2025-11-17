@@ -15,9 +15,27 @@ public class DashboardController {
     private VBox credentialsContainer;
     @FXML
     private Label emailsCredentialCount;
+
+    @FXML
+    private Label noteCredentialCount;
+
+    @FXML
+    private Label creditCardCredentialCount;
+
+    @FXML
+    private Label totalCredentialsCount;
+
+
+
+
     @FXML
     public void initialize() {
-        DashboardService dashboardService = new DashboardService(credentialsContainer, emailsCredentialCount);
+        DashboardService dashboardService = new DashboardService(
+                credentialsContainer,
+                emailsCredentialCount,
+                noteCredentialCount,
+                creditCardCredentialCount,
+                totalCredentialsCount);
         dashboardService.initializeDashboard();
     }
 
