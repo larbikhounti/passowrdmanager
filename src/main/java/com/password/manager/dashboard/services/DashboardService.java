@@ -1,6 +1,7 @@
 package com.password.manager.dashboard.services;
 
 import com.password.manager.credentials.base.Entity;
+import com.password.manager.credentials.enums.CredentialEnum;
 import com.password.manager.credentials.factories.CredentialsFactory;
 import com.password.manager.utils.Helpers;
 import javafx.geometry.Pos;
@@ -24,11 +25,13 @@ public class DashboardService {
     }
 
     public void initializeDashboard() {
-        ArrayList<Entity> credentials;
+       ArrayList<Entity> credentials = Entity.getCredentials();
         try {
-            credentials = Objects.requireNonNull(CredentialsFactory.getCredentialService("EMAIL")).getAllCredentials();
             for (Entity credential : credentials) {
-                addCredential(credential.getUrl(), credential.getEmail());
+                switch (credential.getCredentialType()) {
+                    case CredentialEnum.EMAIL -> addCredential(credential.getUrl(), credential.getEmail());
+                   // case CredentialEnum.NOTE -> addCredential(credential.getTitle, "");
+                }
             }
             emailsCredentialCount.setText(String.valueOf(credentials.size()));
         }catch (NullPointerException e){
@@ -36,9 +39,9 @@ public class DashboardService {
         }
     }
 
-    public void addCredential(String site, String username) {
+    public void addCredential(String _title, String _subtitle) {
 
-        Helpers.Logger("Adding credential: site=" + site + ", username=" + username, "INFO");
+        Helpers.Logger("Adding credential: site=" + _title + ", username=" + _subtitle, "INFO");
 
         HBox item = new HBox();
         item.setAlignment(Pos.CENTER_LEFT);
@@ -50,10 +53,10 @@ public class DashboardService {
 
         VBox textBox = new VBox(2);
 
-        Label title = new Label(site);
+        Label title = new Label(_title);
         title.setStyle("-fx-text-fill: white; -fx-font-size: 14px; -fx-font-weight: bold;");
 
-        Label subtitle = new Label(username);
+        Label subtitle = new Label(_subtitle);
         subtitle.setStyle("-fx-text-fill: #888888; -fx-font-size: 12px;");
 
         textBox.getChildren().addAll(title, subtitle);
