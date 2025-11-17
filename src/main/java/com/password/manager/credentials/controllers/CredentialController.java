@@ -41,6 +41,7 @@ public class CredentialController implements Initializable {
 
     // Note field
     private TextArea noteTextArea;
+    private TextField noteTitleField;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -163,6 +164,15 @@ public class CredentialController implements Initializable {
         Label noteLabel = new Label("Note");
         noteLabel.setStyle("-fx-text-fill: #cccccc; -fx-font-size: 14px;");
 
+        Label titleLabel = new Label("Title");
+        titleLabel.setStyle("-fx-text-fill: #cccccc; -fx-font-size: 14px;");
+
+        // Note Title Field
+        noteTitleField = new TextField();
+        noteTitleField.setPromptText("Enter note title...");
+        noteTitleField.setPrefWidth(520);
+        noteTitleField.setStyle("-fx-background-color: #1e1e1e; -fx-text-fill: white; " +
+                "-fx-prompt-text-fill: #666666; -fx-background-radius: 5; -fx-padding: 10;");
         // Note TextArea
         noteTextArea = new TextArea();
         noteTextArea.setPromptText("Enter your note here...");
@@ -174,7 +184,10 @@ public class CredentialController implements Initializable {
                 "-fx-control-inner-background: #1e1e1e;");
 
         // Add to container
+        VBox titleBox = new VBox(5, titleLabel, noteTitleField);
         VBox noteBox = new VBox(5, noteLabel, noteTextArea);
+
+        formContainer.getChildren().add(titleBox);
         formContainer.getChildren().add(noteBox);
     }
 
@@ -235,17 +248,46 @@ public class CredentialController implements Initializable {
             Helpers.showAlert("Error", "All fields are required", Alert.AlertType.ERROR);
             return;
         }
+        Entity creditCardEntity = new Entity.Builder()
+                .setCredentialType(CredentialEnum.CREDIT_CARD)
+                .setNumber(cardNumber)
+                .setHolderName(cardHolder)
+                .setExpiry(expiryDate)
+                .setCVV(cvv)
+                .build();
+        System.out.printf(" Saving credit card: %s, %s, %s, %s \n", creditCardEntity.getcreditCardNumber(), cardHolder, expiryDate, cvv);
+        try {
+            Objects.requireNonNull(CredentialsFactory.getCredentialService("CREDITCARD")).addCredential(creditCardEntity);
+        } catch (NullPointerException e) {
+            Helpers.showAlert("Error", "Failed to save credential", Alert.AlertType.ERROR);
+            return;
+        }
         Helpers.showAlert("Success", "Credit card saved successfully!", Alert.AlertType.INFORMATION);
     }
 
     private void saveNote() {
         String note = noteTextArea.getText().trim();
+        String title = noteTitleField.getText().trim();
+        Helpers.Logger("Saving note with title: " + title + " and content: " + note, "INFO");
 
-        if (note.isEmpty()) {
-            Helpers.showAlert("Error", "Note cannot be empty", Alert.AlertType.ERROR);
+        if (note.isEmpty() || title.isEmpty()) {
+            Helpers.showAlert("Error", "Note  or title cannot be empty", Alert.AlertType.ERROR);
             return;
         }
-        Helpers.showAlert("Success", "Note saved successfully!", Alert.AlertType.INFORMATION);
+
+
+        Entity noteEntity = new Entity.Builder()
+                .setCredentialType(CredentialEnum.NOTE)
+                .setNote(note)
+                .setTitle(title)
+                .build();
+
+        try {
+            Objects.requireNonNull(CredentialsFactory.getCredentialService("NOTE")).addCredential(noteEntity);
+            Helpers.showAlert("Success", "nOTE saved successfully!", Alert.AlertType.INFORMATION);
+        } catch (NullPointerException e) {
+            Helpers.showAlert("Error", "Failed to save credential", Alert.AlertType.ERROR);
+        }
     }
 
     @FXML
