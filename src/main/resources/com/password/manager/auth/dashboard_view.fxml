@@ -19,7 +19,7 @@
                 <Label text="🔑" style="-fx-text-fill: white; -fx-font-size: 18px;" />
                 <VBox>
                     <Label text="All" style="-fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 14px;" />
-                    <Label text="55 Items" style="-fx-text-fill: #b3d9ff; -fx-font-size: 11px;" />
+                    <Label text="0" fx:id="totalCredentialsCount" style="-fx-text-fill: #b3d9ff; -fx-font-size: 11px;" />
                 </VBox>
             </HBox>
 
@@ -35,7 +35,7 @@
 
                 <VBox>
                     <Label text="Credit Cards" style="-fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 14px;" />
-                    <Label text="146" style="-fx-text-fill: #888888; -fx-font-size: 11px;" />
+                    <Label text="0" fx:id="creditCardCredentialCount" style="-fx-text-fill: #888888; -fx-font-size: 11px;" />
                 </VBox>
             </HBox>
 
@@ -43,7 +43,7 @@
 
                 <VBox>
                     <Label text="Notes" style="-fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 14px;" />
-                    <Label text="8" style="-fx-text-fill: #888888; -fx-font-size: 11px;" />
+                    <Label text="0"  fx:id="noteCredentialCount" style="-fx-text-fill: #888888; -fx-font-size: 11px;" />
                 </VBox>
             </HBox>
 
@@ -74,7 +74,6 @@
 
                         <Button onAction="#showCreateScene" text="+" style="-fx-background-color: transparent; -fx-text-fill: #888888; -fx-cursor: hand; -fx-font-size: 20px;" />
                     </HBox>
-                    <Label text="55 Items" style="-fx-text-fill: #888888; -fx-font-size: 12px;" />
 
                     <TextField promptText="Search" style="-fx-background-color: #1e1e1e; -fx-text-fill: white; -fx-prompt-text-fill: #666666; -fx-background-radius: 5; -fx-border-color: #0066cc; -fx-border-radius: 5; -fx-padding: 8;" />
                 </VBox>
