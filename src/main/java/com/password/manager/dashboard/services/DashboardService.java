@@ -16,30 +16,62 @@ import java.util.Objects;
 public class DashboardService {
     private final VBox credentialsContainer;
     private final Label emailsCredentialCount;
-
-    public DashboardService(VBox credentialsContainer, Label emailsCredentialCount) {
+    private final Label notesCredentialCount;
+    private final Label creditCardCredentialCount;
+    private final Label totalCredentialsCount;
+    public DashboardService(VBox credentialsContainer, Label emailsCredentialCount, Label notesCredentialCount, Label creditCardCredentialCount, Label totalCredentialsCount) {
         this.credentialsContainer = credentialsContainer;
         this.emailsCredentialCount = emailsCredentialCount;
-
+        this.notesCredentialCount = notesCredentialCount;
+        this.creditCardCredentialCount = creditCardCredentialCount;
+        this.totalCredentialsCount = totalCredentialsCount;
 
     }
 
     public void initializeDashboard() {
-       ArrayList<Entity> credentials = Entity.getCredentials();
+        ArrayList<Entity> credentials = Entity.getCredentials();
         try {
             for (Entity credential : credentials) {
                 switch (credential.getCredentialType()) {
-                    case CredentialEnum.EMAIL -> addCredential(credential.getUrl(), credential.getEmail());
-                   // case CredentialEnum.NOTE -> addCredential(credential.getTitle, "");
+                    case CredentialEnum.EMAIL ->
+                            addCredential(credential.getUrl(), credential.getEmail(), "\uD83D\uDD17");
+                    case CredentialEnum.NOTE ->
+                            addCredential(credential.getTitle(), credential.getNote(), "\uD83D\uDCDD");
+                    case CredentialEnum.CREDIT_CARD ->
+                            addCredential(credential.getcreditCardHolderName(), credential.getcreditCardNumber(), "\uD83D\uDCB3");
                 }
             }
-            emailsCredentialCount.setText(String.valueOf(credentials.size()));
-        }catch (NullPointerException e){
+            emailsCredentialCount.setText(
+                    String.valueOf(
+                            credentials.stream()
+                                    .filter(c -> c.getCredentialType() == CredentialEnum.EMAIL)
+                                    .count()
+                    )
+            );
+            notesCredentialCount.setText(
+                    String.valueOf(
+                            credentials.stream()
+                                    .filter(c -> c.getCredentialType() == CredentialEnum.NOTE)
+                                    .count()
+                    )
+            );
+
+            creditCardCredentialCount.setText(
+                    String.valueOf(
+                            credentials.stream()
+                                    .filter(c -> c.getCredentialType() == CredentialEnum.CREDIT_CARD)
+                                    .count()
+                    )
+            );
+
+            totalCredentialsCount.setText(String.valueOf(credentials.size()));
+
+        } catch (NullPointerException e) {
             Helpers.Logger("No credential service found: " + e.getMessage(), "ERROR");
         }
     }
 
-    public void addCredential(String _title, String _subtitle) {
+    public void addCredential(String _title, String _subtitle, String _Icon) {
 
         Helpers.Logger("Adding credential: site=" + _title + ", username=" + _subtitle, "INFO");
 
@@ -48,7 +80,7 @@ public class DashboardService {
         item.setSpacing(15);
         item.setStyle("-fx-background-color: #252525; -fx-padding: 12; -fx-cursor: hand;");
 
-        Label icon = new Label("\uD83D\uDD17");
+        Label icon = new Label(_Icon);
         icon.setStyle("-fx-font-size: 24px;");
 
         VBox textBox = new VBox(2);
