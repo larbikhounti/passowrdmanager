@@ -6,10 +6,18 @@ import com.password.manager.credentials.contracts.ICredential;
 import java.util.ArrayList;
 
 public class NoteService implements ICredential {
+    private final ArrayList<Entity> _credentials;
 
+    public NoteService() {
+        _credentials = Entity.getCredentials();
+    }
     @Override
     public boolean addCredential(Entity credential) {
-        return false;
+        boolean result =  _credentials.add(credential);
+        for (Entity c : _credentials) {
+            System.out.printf("id is %d title is %s note %s \n", c.getId(), c.getTitle(), c.getNote());
+        }
+        return result;
     }
 
     @Override
