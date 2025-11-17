@@ -8,30 +8,32 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class EmailService implements ICredential {
-    private static final ArrayList<Entity> _credentials = new ArrayList<Entity>();
-    private static int _id = 0;
+    private final ArrayList<Entity> _credentials;
 
+    public EmailService() {
+        _credentials = Entity.getCredentials();
+    }
 
     @Override
     public boolean addCredential(Entity credential) {
-        credential.setId(++_id);
-        _credentials.add(credential);
+       boolean result =  _credentials.add(credential);
         for (Entity c : _credentials) {
             System.out.printf("id is %d email is %s password is %s url is %s \n", c.getId(), c.getEmail(), c.getPassword(), c.getUrl());
         }
-        return false;
+        return result;
     }
 
     @Override
     public boolean editCredential(int id, Entity credential) {
      Entity entity = this.getCredential(id);
         if (entity != null) {
-            entity.setEmail(credential.getEmail());
-            entity.setPassword(credential.getPassword());
-            entity.setUrl(credential.getUrl());
-            _credentials.set(id, entity);
+            Entity emailEntity = new Entity.Builder()
+                    .setEmail(credential.getEmail())
+                    .setPassword(credential.getPassword())
+                    .setUrl(credential.getUrl())
+                    .build();
+            _credentials.set(id, emailEntity);
         }
-
         return false;
     }
 
