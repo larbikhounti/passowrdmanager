@@ -1,7 +1,7 @@
 package com.password.manager.credentials.controllers;
 
 import com.password.manager.credentials.base.Entity;
-import com.password.manager.credentials.entities.EmailEntity;
+import com.password.manager.credentials.enums.CredentialEnum;
 import com.password.manager.credentials.factories.CredentialsFactory;
 import com.password.manager.utils.Helpers;
 import javafx.collections.FXCollections;
@@ -210,10 +210,12 @@ public class CredentialController implements Initializable {
             return;
         }
 
-        Entity emailEntity = new EmailEntity();
-        emailEntity.setEmail(email);
-        emailEntity.setPassword(password);
-        emailEntity.setUrl(url);
+        Entity emailEntity = new Entity.Builder()
+                .setCredentialType(CredentialEnum.EMAIL)
+                .setUrl(url)
+                .setEmail(email)
+                .setPassword(password)
+                .build();
 
         try {
             Objects.requireNonNull(CredentialsFactory.getCredentialService("EMAIL")).addCredential(emailEntity);
