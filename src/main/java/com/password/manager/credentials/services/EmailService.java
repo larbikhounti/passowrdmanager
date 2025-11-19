@@ -25,14 +25,13 @@ public class EmailService implements ICredential {
 
     @Override
     public boolean editCredential(int id, Entity credential) {
-     Entity entity = this.getCredential(id);
-        if (entity != null) {
+        if (credential != null) {
             Entity emailEntity = new Entity.Builder()
                     .setEmail(credential.getEmail())
                     .setPassword(credential.getPassword())
                     .setUrl(credential.getUrl())
                     .build();
-            _credentials.set(id, emailEntity);
+            _credentials.set(_credentials.indexOf(credential), emailEntity);
         }
         return false;
     }
@@ -57,6 +56,7 @@ public class EmailService implements ICredential {
         }
         return null;
     }
+
 
     public boolean checkPasswordStrength(String password) {
         return false;
