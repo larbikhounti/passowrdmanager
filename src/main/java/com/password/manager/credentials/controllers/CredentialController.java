@@ -231,7 +231,7 @@ public class CredentialController implements Initializable {
                 .build();
 
         try {
-            Objects.requireNonNull(CredentialsFactory.getCredentialService("EMAIL")).addCredential(emailEntity);
+            Objects.requireNonNull(CredentialsFactory.getCredentialService(emailEntity).addCredential(emailEntity));
             Helpers.showAlert("Success", "Password saved successfully!", Alert.AlertType.INFORMATION);
         } catch (NullPointerException e) {
             Helpers.showAlert("Error", "Failed to save credential", Alert.AlertType.ERROR);
@@ -255,9 +255,10 @@ public class CredentialController implements Initializable {
                 .setExpiry(expiryDate)
                 .setCVV(cvv)
                 .build();
-        System.out.printf(" Saving credit card: %s, %s, %s, %s \n", creditCardEntity.getcreditCardNumber(), cardHolder, expiryDate, cvv);
+        System.out.printf(" Saving credit card: %s, %s, %s, %s \n", creditCardEntity.getcreditCardNumber()
+                , cardHolder, expiryDate, cvv);
         try {
-            Objects.requireNonNull(CredentialsFactory.getCredentialService("CREDITCARD")).addCredential(creditCardEntity);
+            Objects.requireNonNull(CredentialsFactory.getCredentialService(creditCardEntity)).addCredential(creditCardEntity);
         } catch (NullPointerException e) {
             Helpers.showAlert("Error", "Failed to save credential", Alert.AlertType.ERROR);
             return;
@@ -283,7 +284,7 @@ public class CredentialController implements Initializable {
                 .build();
 
         try {
-            Objects.requireNonNull(CredentialsFactory.getCredentialService("NOTE")).addCredential(noteEntity);
+            Objects.requireNonNull(CredentialsFactory.getCredentialService(noteEntity)).addCredential(noteEntity);
             Helpers.showAlert("Success", "nOTE saved successfully!", Alert.AlertType.INFORMATION);
         } catch (NullPointerException e) {
             Helpers.showAlert("Error", "Failed to save credential", Alert.AlertType.ERROR);
