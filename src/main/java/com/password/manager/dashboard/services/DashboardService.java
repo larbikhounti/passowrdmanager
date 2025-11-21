@@ -1,6 +1,9 @@
 package com.password.manager.dashboard.services;
 
 import com.password.manager.credentials.base.Entity;
+import com.password.manager.credentials.entities.CreditCard;
+import com.password.manager.credentials.entities.Email;
+import com.password.manager.credentials.entities.Note;
 import com.password.manager.credentials.enums.CredentialEnum;
 import com.password.manager.credentials.services.RenderService;
 import com.password.manager.utils.Helpers;
@@ -28,42 +31,34 @@ public class DashboardService {
     }
 
     public void initializeDashboard() {
-        ArrayList<Entity> credentials = Entity.getCredentials();
         try {
-            for (Entity credential : credentials) {
-                switch (credential.getCredentialType()) {
-                    case CredentialEnum.EMAIL ->
-                            this.renderService.renderCredentialMany(credential.getId(), credential.getUrl(), credential.getEmail(), "\uD83D\uDD17");
-                    case CredentialEnum.NOTE ->
-                            this.renderService.renderCredentialMany(credential.getId(), credential.getTitle(), credential.getNote(), "\uD83D\uDCDD");
-                    case CredentialEnum.CREDIT_CARD ->
-                            this.renderService.renderCredentialMany(credential.getId(), credential.getcreditCardHolderName(), credential.getcreditCardNumber(), "\uD83D\uDCB3");
-                }
+            for (Entity credential : Entity.credentials) {
+                credential.renderMany(renderService);
             }
             emailsCredentialCount.setText(
                     String.valueOf(
-                            credentials.stream()
-                                    .filter(c -> c.getCredentialType() == CredentialEnum.EMAIL)
+                            Entity.credentials.stream()
+                                    .filter(c -> c instanceof Email)
                                     .count()
                     )
             );
             notesCredentialCount.setText(
                     String.valueOf(
-                            credentials.stream()
-                                    .filter(c -> c.getCredentialType() == CredentialEnum.NOTE)
+                            Entity.credentials.stream()
+                                    .filter(c -> c instanceof Note)
                                     .count()
                     )
             );
 
             creditCardCredentialCount.setText(
                     String.valueOf(
-                            credentials.stream()
-                                    .filter(c -> c.getCredentialType() == CredentialEnum.CREDIT_CARD)
+                            Entity.credentials.stream()
+                                    .filter(c -> c instanceof CreditCard)
                                     .count()
                     )
             );
 
-            totalCredentialsCount.setText(String.valueOf(credentials.size()));
+            totalCredentialsCount.setText(String.valueOf(Entity.credentials.size()));
 
         } catch (NullPointerException e) {
             Helpers.Logger("No credential service found: " + e.getMessage(), "ERROR");
