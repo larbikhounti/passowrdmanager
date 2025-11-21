@@ -1,14 +1,16 @@
 package com.password.manager.credentials.controllers;
 
 import com.password.manager.credentials.base.Entity;
+import com.password.manager.credentials.entities.CreditCard;
+import com.password.manager.credentials.entities.Note;
 import com.password.manager.credentials.enums.CredentialEnum;
-import com.password.manager.credentials.factories.CredentialsFactory;
+import com.password.manager.credentials.factories.EntitiesFactory;
+import com.password.manager.credentials.factories.ServicesFactory;
 import com.password.manager.utils.Helpers;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -222,16 +224,9 @@ public class CredentialController implements Initializable {
             Helpers.showAlert("Error", "All fields are required", Alert.AlertType.ERROR);
             return;
         }
-
-        Entity emailEntity = new Entity.Builder()
-                .setCredentialType(CredentialEnum.EMAIL)
-                .setUrl(url)
-                .setEmail(email)
-                .setPassword(password)
-                .build();
-
+        Entity emailEntity = EntitiesFactory.Email(url, email, password);
         try {
-            Objects.requireNonNull(CredentialsFactory.getCredentialService(emailEntity).addCredential(emailEntity));
+            Objects.requireNonNull(ServicesFactory.EmailService().addCredential(emailEntity));
             Helpers.showAlert("Success", "Password saved successfully!", Alert.AlertType.INFORMATION);
         } catch (NullPointerException e) {
             Helpers.showAlert("Error", "Failed to save credential", Alert.AlertType.ERROR);
@@ -248,17 +243,11 @@ public class CredentialController implements Initializable {
             Helpers.showAlert("Error", "All fields are required", Alert.AlertType.ERROR);
             return;
         }
-        Entity creditCardEntity = new Entity.Builder()
-                .setCredentialType(CredentialEnum.CREDIT_CARD)
-                .setNumber(cardNumber)
-                .setHolderName(cardHolder)
-                .setExpiry(expiryDate)
-                .setCVV(cvv)
-                .build();
-        System.out.printf(" Saving credit card: %s, %s, %s, %s \n", creditCardEntity.getcreditCardNumber()
+        CreditCard creditCardEntity =  EntitiesFactory.CreditCard(cardHolder, cardNumber, expiryDate, cvv);
+        System.out.printf(" Saving credit card: %s, %s, %s, %s \n", creditCardEntity.getCreditCardHolderName()
                 , cardHolder, expiryDate, cvv);
         try {
-            Objects.requireNonNull(CredentialsFactory.getCredentialService(creditCardEntity)).addCredential(creditCardEntity);
+            Objects.requireNonNull(ServicesFactory.CreditCardService().addCredential(creditCardEntity));
         } catch (NullPointerException e) {
             Helpers.showAlert("Error", "Failed to save credential", Alert.AlertType.ERROR);
             return;
@@ -277,14 +266,10 @@ public class CredentialController implements Initializable {
         }
 
 
-        Entity noteEntity = new Entity.Builder()
-                .setCredentialType(CredentialEnum.NOTE)
-                .setNote(note)
-                .setTitle(title)
-                .build();
+        Note noteEntity = EntitiesFactory.Note(title, note);
 
         try {
-            Objects.requireNonNull(CredentialsFactory.getCredentialService(noteEntity)).addCredential(noteEntity);
+            Objects.requireNonNull(ServicesFactory.NoteService().addCredential(noteEntity));
             Helpers.showAlert("Success", "nOTE saved successfully!", Alert.AlertType.INFORMATION);
         } catch (NullPointerException e) {
             Helpers.showAlert("Error", "Failed to save credential", Alert.AlertType.ERROR);
