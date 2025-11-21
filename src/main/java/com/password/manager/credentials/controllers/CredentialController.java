@@ -224,8 +224,8 @@ public class CredentialController implements Initializable {
             Helpers.showAlert("Error", "All fields are required", Alert.AlertType.ERROR);
             return;
         }
-        Entity emailEntity = EntitiesFactory.Email(url, email, password);
         try {
+            Entity emailEntity = EntitiesFactory.Email(url, email, password);
             Objects.requireNonNull(ServicesFactory.EmailService().addCredential(emailEntity));
             Helpers.showAlert("Success", "Password saved successfully!", Alert.AlertType.INFORMATION);
         } catch (NullPointerException e) {
@@ -243,10 +243,8 @@ public class CredentialController implements Initializable {
             Helpers.showAlert("Error", "All fields are required", Alert.AlertType.ERROR);
             return;
         }
-        CreditCard creditCardEntity =  EntitiesFactory.CreditCard(cardHolder, cardNumber, expiryDate, cvv);
-        System.out.printf(" Saving credit card: %s, %s, %s, %s \n", creditCardEntity.getCreditCardHolderName()
-                , cardHolder, expiryDate, cvv);
         try {
+            CreditCard creditCardEntity =  EntitiesFactory.CreditCard(cardHolder, cardNumber, expiryDate, cvv);
             Objects.requireNonNull(ServicesFactory.CreditCardService().addCredential(creditCardEntity));
         } catch (NullPointerException e) {
             Helpers.showAlert("Error", "Failed to save credential", Alert.AlertType.ERROR);
@@ -264,11 +262,8 @@ public class CredentialController implements Initializable {
             Helpers.showAlert("Error", "Note  or title cannot be empty", Alert.AlertType.ERROR);
             return;
         }
-
-
-        Note noteEntity = EntitiesFactory.Note(title, note);
-
         try {
+            Note noteEntity = EntitiesFactory.Note(title, note);
             Objects.requireNonNull(ServicesFactory.NoteService().addCredential(noteEntity));
             Helpers.showAlert("Success", "nOTE saved successfully!", Alert.AlertType.INFORMATION);
         } catch (NullPointerException e) {
