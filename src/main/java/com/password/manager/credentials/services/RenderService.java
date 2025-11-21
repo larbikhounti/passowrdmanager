@@ -1,22 +1,23 @@
 package com.password.manager.credentials.services;
 
 import com.password.manager.credentials.base.Entity;
-import com.password.manager.credentials.factories.CredentialsFactory;
+import com.password.manager.credentials.entities.CreditCard;
+import com.password.manager.credentials.entities.Email;
+import com.password.manager.credentials.entities.Note;
 import com.password.manager.utils.Helpers;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
-import java.util.ArrayList;
-import java.util.Objects;
-import java.util.stream.Stream;
+import static com.password.manager.credentials.enums.CredentialEnum.*;
 
 public class RenderService {
 
 
     private final VBox credentialsContainer;
     private final VBox credentialContainer;
+
     public RenderService(VBox credentialsContainer, VBox credentialContainer) {
         this.credentialsContainer = credentialsContainer;
         this.credentialContainer = credentialContainer;
@@ -33,7 +34,7 @@ public class RenderService {
         item.setId(String.valueOf(id));
 
         item.setOnMouseClicked(e -> {
-            Entity credential = Entity.getCredentials().stream()
+            Entity credential = Entity.credentials.stream()
                     .filter(c -> c.getId() == id)
                     .findFirst()
                     .orElse(null);
@@ -68,24 +69,20 @@ public class RenderService {
         // and we need to show the in textFields the data from the credential
         // we have 3 types of credentials: email, note and credit card
         this.credentialContainer.getChildren().clear();
-        switch (credential.getCredentialType()) {
-            case EMAIL -> renderEmailCredential(credential);
-            case NOTE -> renderNoteCredential(credential);
-            case CREDIT_CARD -> renderCreditCardCredential(credential);
-            default -> Helpers.Logger("Unknown credential type: " + credential.getCredentialType(), "ERROR");
-        }
+
+        credential.render(this);
 
         Button updateButton = new Button("Update Credential");
         updateButton.setStyle("-fx-background-color: #3a3a3a; -fx-text-fill: white; -fx-padding: 10 20; -fx-cursor: hand;");
         updateButton.setOnAction(e -> {
-           // Objects.requireNonNull(CredentialsFactory.getCredentialService(credential)).editCredential(credential.getId() ,credential);
+            // Objects.requireNonNull(CredentialsFactory.getCredentialService(credential)).editCredential(credential.getId() ,credential);
         });
 
         this.credentialContainer.getChildren().add(updateButton);
 
     }
 
-    private void renderEmailCredential(Entity credential) {
+    public void renderEmailCredential(Email credential) {
         Helpers.Logger("Rendering email credential", "INFO");
 
         VBox container = new VBox(15);
@@ -138,8 +135,6 @@ public class RenderService {
         });
 
 
-
-
         container.getChildren().addAll(
                 urlLabel, urlField,
                 emailLabel, emailField,
@@ -149,7 +144,8 @@ public class RenderService {
         this.credentialContainer.getChildren().add(container);
 
     }
-    private void renderNoteCredential(Entity credential) {
+
+    public void renderNoteCredential(Note credential) {
         Helpers.Logger("Rendering note credential", "INFO");
 
         VBox container = new VBox(3);
@@ -163,7 +159,7 @@ public class RenderService {
 
         // Note field
         Label noteLabel = new Label("Note");
-        TextArea  noteTextArea = new TextArea();
+        TextArea noteTextArea = new TextArea();
         noteTextArea.setText(credential.getNote());
         noteTextArea.setPrefWidth(520);
         noteTextArea.setPrefHeight(200);
@@ -181,7 +177,7 @@ public class RenderService {
         this.credentialContainer.getChildren().add(container);
     }
 
-    private void renderCreditCardCredential(Entity credential) {
+    public void renderCreditCardCredential(CreditCard credential) {
         Helpers.Logger("Rendering credit card credential", "INFO");
 
         VBox container = new VBox(15);
@@ -190,21 +186,21 @@ public class RenderService {
         // Card Holder Name field
         Label holderLabel = new Label("Cardholder Name");
         holderLabel.setStyle("-fx-text-fill: white; -fx-font-size: 12px;");
-        TextField holderField = new TextField(credential.getcreditCardHolderName());
+        TextField holderField = new TextField(credential.getCreditCardHolderName());
         holderField.setStyle("-fx-background-color: #252525; -fx-text-fill: white; -fx-padding: 10;");
         holderField.setEditable(true);
 
         // Card Number field
         Label numberLabel = new Label("Card Number");
         numberLabel.setStyle("-fx-text-fill: white; -fx-font-size: 12px;");
-        TextField numberField = new TextField(credential.getcreditCardNumber());
+        TextField numberField = new TextField(credential.getCreditCardNumber());
         numberField.setStyle("-fx-background-color: #252525; -fx-text-fill: white; -fx-padding: 10;");
         numberField.setEditable(true);
 
         // Expiry Date field
         Label expiryLabel = new Label("Expiry Date");
         expiryLabel.setStyle("-fx-text-fill: white; -fx-font-size: 12px;");
-        TextField expiryField = new TextField(credential.getcreditCardExpiry());
+        TextField expiryField = new TextField(credential.getCreditCardExpiry());
         expiryField.setStyle("-fx-background-color: #252525; -fx-text-fill: white; -fx-padding: 10;");
         expiryField.setEditable(true);
 
@@ -213,11 +209,11 @@ public class RenderService {
         cvvLabel.setStyle("-fx-text-fill: white; -fx-font-size: 12px;");
 
         PasswordField cvvField = new PasswordField();
-        cvvField.setText(credential.getcreditCardCVV());
+        cvvField.setText(credential.getCreditCardCVV());
         cvvField.setStyle("-fx-background-color: #252525; -fx-text-fill: white; -fx-padding: 10;");
         cvvField.setEditable(true);
 
-        TextField cvvTextField = new TextField(credential.getcreditCardCVV());
+        TextField cvvTextField = new TextField(credential.getCreditCardCVV());
         cvvTextField.setStyle("-fx-background-color: #252525; -fx-text-fill: white; -fx-padding: 10;");
         cvvTextField.setEditable(true);
         cvvTextField.setVisible(false);
