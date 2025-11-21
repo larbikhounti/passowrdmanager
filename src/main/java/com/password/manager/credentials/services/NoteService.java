@@ -2,20 +2,21 @@ package com.password.manager.credentials.services;
 
 import com.password.manager.credentials.base.Entity;
 import com.password.manager.credentials.contracts.ICredential;
+import com.password.manager.credentials.entities.Note;
 
 import java.util.ArrayList;
 
 public class NoteService implements ICredential {
-    private final ArrayList<Entity> _credentials;
 
     public NoteService() {
-        _credentials = Entity.getCredentials();
     }
     @Override
     public boolean addCredential(Entity credential) {
-        boolean result =  _credentials.add(credential);
-        for (Entity c : _credentials) {
-            System.out.printf("id is %d title is %s note %s \n", c.getId(), c.getTitle(), c.getNote());
+        boolean result =  Entity.credentials.add(credential);
+        for (Entity c : Entity.credentials) {
+            if (c == null) continue;
+            if (!( c instanceof Note noteEntity))  continue;
+            System.out.printf("id is %d title is %s note %s \n", noteEntity.getId(), noteEntity.getTitle(), noteEntity.getNote());
         }
         return result;
     }
