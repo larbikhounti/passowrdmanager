@@ -1,4 +1,4 @@
-package com.password.manager.credentials.services;
+package com.password.manager.credentials.services.strategies;
 
 import com.password.manager.credentials.base.Entity;
 import com.password.manager.credentials.contracts.ICredential;
@@ -6,9 +6,9 @@ import com.password.manager.credentials.entities.CreditCard;
 
 import java.util.ArrayList;
 
-public class CreditCardService implements ICredential {
+public class CreditCardStrategy implements ICredential {
 
-    public CreditCardService() {
+    public CreditCardStrategy() {
     }
     @Override
     public boolean addCredential(Entity credential) {

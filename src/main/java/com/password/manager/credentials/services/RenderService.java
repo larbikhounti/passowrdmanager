@@ -4,13 +4,15 @@ import com.password.manager.credentials.base.Entity;
 import com.password.manager.credentials.entities.CreditCard;
 import com.password.manager.credentials.entities.Email;
 import com.password.manager.credentials.entities.Note;
+import com.password.manager.credentials.factories.EntitiesFactory;
+import com.password.manager.credentials.factories.StrategiesFactory;
 import com.password.manager.utils.Helpers;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
-import static com.password.manager.credentials.enums.CredentialEnum.*;
+import java.util.Objects;
 
 public class RenderService {
 
@@ -72,18 +74,15 @@ public class RenderService {
 
         credential.render(this);
 
-        Button updateButton = new Button("Update Credential");
-        updateButton.setStyle("-fx-background-color: #3a3a3a; -fx-text-fill: white; -fx-padding: 10 20; -fx-cursor: hand;");
-        updateButton.setOnAction(e -> {
-            // Objects.requireNonNull(CredentialsFactory.getCredentialService(credential)).editCredential(credential.getId() ,credential);
-        });
 
-        this.credentialContainer.getChildren().add(updateButton);
 
     }
 
     public void renderEmailCredential(Email credential) {
         Helpers.Logger("Rendering email credential", "INFO");
+
+
+
 
         VBox container = new VBox(15);
         container.setStyle("-fx-padding: 20;");
@@ -94,6 +93,13 @@ public class RenderService {
         TextField urlField = new TextField(credential.getUrl());
         urlField.setStyle("-fx-background-color: #252525; -fx-text-fill: white; -fx-padding: 10;");
         urlField.setEditable(true);
+
+        TextField idField = new TextField(String.valueOf(credential.getId()));
+        idField.setEditable(false);
+        idField.setVisible(false);
+
+
+
 
         // Email field
         Label emailLabel = new Label("Email");
@@ -138,10 +144,25 @@ public class RenderService {
         container.getChildren().addAll(
                 urlLabel, urlField,
                 emailLabel, emailField,
-                passwordLabel, passwordField, passwordTextField
+                passwordLabel, passwordField, passwordTextField,
+                idField
         );
+        Button updateButton = new Button("Update Email Credential");
+        updateButton.setStyle("-fx-background-color: #3a3a3a; -fx-text-fill: white; -fx-padding: 10 20; -fx-cursor: hand;");
+        updateButton.setOnAction(e -> {
+            try {
+                Email updatedEmail = EntitiesFactory.Email(urlField.getText(), emailField.getText(), passwordField.getText());
+                Objects.requireNonNull(StrategiesFactory.getStrategy(credential)).editCredential(credential.getId() , updatedEmail);
+                Helpers.Logger("Update button clicked for credential id: " + credential.getId(), "INFO");
+                Helpers.showAlert("Success", "Email updated successfully!", Alert.AlertType.INFORMATION);
+            } catch (Exception ex) {
+                Helpers.Logger("Error updating email credential: " + ex.getMessage(), "ERROR");
+                Helpers.showAlert("Error", "Error updating email credential", Alert.AlertType.ERROR);
+            }
+        });
 
         this.credentialContainer.getChildren().add(container);
+        this.credentialContainer.getChildren().add(updateButton);
 
     }
 
@@ -174,7 +195,23 @@ public class RenderService {
                 noteLabel, noteTextArea
         );
 
+        Button updateButton = new Button("Update Note Credential");
+        updateButton.setStyle("-fx-background-color: #3a3a3a; -fx-text-fill: white; -fx-padding: 10 20; -fx-cursor: hand;");
+        updateButton.setOnAction(e -> {
+            try{
+                Note updateNote = EntitiesFactory.Note(titleField.getText(), noteTextArea.getText());
+                Objects.requireNonNull(StrategiesFactory.getStrategy(credential)).editCredential(credential.getId() , updateNote);
+                Helpers.Logger("Update button clicked for credential id: " + credential.getId(), "INFO");
+                Helpers.showAlert("Success", "Note updated successfully!", Alert.AlertType.INFORMATION);
+            } catch (Exception ex) {
+                Helpers.Logger("Error updating note credential: " + ex.getMessage(), "ERROR");
+                Helpers.showAlert("Error", "Error updating note credential", Alert.AlertType.ERROR);
+            }
+        });
+
+
         this.credentialContainer.getChildren().add(container);
+        this.credentialContainer.getChildren().add(updateButton);
     }
 
     public void renderCreditCardCredential(CreditCard credential) {
@@ -183,7 +220,7 @@ public class RenderService {
         VBox container = new VBox(15);
         container.setStyle("-fx-padding: 20;");
 
-        // Card Holder Name field
+        // CardHolder Name field
         Label holderLabel = new Label("Cardholder Name");
         holderLabel.setStyle("-fx-text-fill: white; -fx-font-size: 12px;");
         TextField holderField = new TextField(credential.getCreditCardHolderName());
@@ -235,6 +272,20 @@ public class RenderService {
             cvvField.setVisible(true);
             cvvField.setManaged(true);
         });
+        Button updateButton = new Button("Update CreditCard Credential");
+        updateButton.setStyle("-fx-background-color: #3a3a3a; -fx-text-fill: white; -fx-padding: 10 20; -fx-cursor: hand;");
+        updateButton.setOnAction(e -> {
+            try {
+                CreditCard updatedCreditCard = EntitiesFactory.CreditCard(holderField.getText(), numberField.getText(), expiryField.getText(), cvvField.getText());
+                Objects.requireNonNull(StrategiesFactory.getStrategy(credential)).editCredential(credential.getId() , updatedCreditCard);
+                Helpers.Logger("Update button clicked for credential id: " + credential.getId(), "INFO");
+                Helpers.showAlert("Success", "Credit card updated successfully!", Alert.AlertType.INFORMATION);
+            } catch (Exception ex) {
+                Helpers.Logger("Error updating credit card credential: " + ex.getMessage(), "ERROR");
+                Helpers.showAlert("Error", "Error updating credit card credential", Alert.AlertType.ERROR);
+            }
+
+        });
 
         container.getChildren().addAll(
                 holderLabel, holderField,
@@ -244,6 +295,7 @@ public class RenderService {
         );
 
         this.credentialContainer.getChildren().add(container);
+        this.credentialContainer.getChildren().add(updateButton);
     }
 
 }

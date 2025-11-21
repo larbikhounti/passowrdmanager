@@ -1,4 +1,4 @@
-package com.password.manager.credentials.services;
+package com.password.manager.credentials.services.strategies;
 
 import com.password.manager.credentials.base.Entity;
 import com.password.manager.credentials.contracts.ICredential;
@@ -6,10 +6,10 @@ import com.password.manager.credentials.entities.Email;
 
 import java.util.ArrayList;
 
-public class EmailService implements ICredential {
+public class EmailStrategy implements ICredential {
 
 
-    public EmailService() {
+    public EmailStrategy() {
     }
 
     @Override

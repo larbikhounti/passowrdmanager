@@ -3,9 +3,8 @@ package com.password.manager.credentials.controllers;
 import com.password.manager.credentials.base.Entity;
 import com.password.manager.credentials.entities.CreditCard;
 import com.password.manager.credentials.entities.Note;
-import com.password.manager.credentials.enums.CredentialEnum;
 import com.password.manager.credentials.factories.EntitiesFactory;
-import com.password.manager.credentials.factories.ServicesFactory;
+import com.password.manager.credentials.factories.StrategiesFactory;
 import com.password.manager.utils.Helpers;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
@@ -226,7 +225,7 @@ public class CredentialController implements Initializable {
         }
         try {
             Entity emailEntity = EntitiesFactory.Email(url, email, password);
-            Objects.requireNonNull(ServicesFactory.EmailService().addCredential(emailEntity));
+            Objects.requireNonNull(StrategiesFactory.EmailStrategy().addCredential(emailEntity));
             Helpers.showAlert("Success", "Password saved successfully!", Alert.AlertType.INFORMATION);
         } catch (NullPointerException e) {
             Helpers.showAlert("Error", "Failed to save credential", Alert.AlertType.ERROR);
@@ -245,7 +244,7 @@ public class CredentialController implements Initializable {
         }
         try {
             CreditCard creditCardEntity =  EntitiesFactory.CreditCard(cardHolder, cardNumber, expiryDate, cvv);
-            Objects.requireNonNull(ServicesFactory.CreditCardService().addCredential(creditCardEntity));
+            Objects.requireNonNull(StrategiesFactory.CreditCardStrategy().addCredential(creditCardEntity));
         } catch (NullPointerException e) {
             Helpers.showAlert("Error", "Failed to save credential", Alert.AlertType.ERROR);
             return;
@@ -264,7 +263,7 @@ public class CredentialController implements Initializable {
         }
         try {
             Note noteEntity = EntitiesFactory.Note(title, note);
-            Objects.requireNonNull(ServicesFactory.NoteService().addCredential(noteEntity));
+            Objects.requireNonNull(StrategiesFactory.NoteStrategy().addCredential(noteEntity));
             Helpers.showAlert("Success", "nOTE saved successfully!", Alert.AlertType.INFORMATION);
         } catch (NullPointerException e) {
             Helpers.showAlert("Error", "Failed to save credential", Alert.AlertType.ERROR);
