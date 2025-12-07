@@ -5,6 +5,7 @@ module com.password.manager {
     requires javafx.graphics;
     requires java.logging;
     requires javafx.base;
+    requires java.sql;
 
     opens com.password.manager to javafx.fxml;
     exports com.password.manager;
