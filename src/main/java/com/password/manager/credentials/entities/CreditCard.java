@@ -1,7 +1,6 @@
 package com.password.manager.credentials.entities;
 
 import com.password.manager.credentials.base.Entity;
-import com.password.manager.credentials.enums.CredentialEnum;
 import com.password.manager.credentials.services.RenderService;
 
 public class CreditCard  extends Entity {
@@ -9,13 +8,18 @@ public class CreditCard  extends Entity {
     private  String creditCardExpiry;
     private  String creditCardCVV;
     private  String creditCardHolderName;
+    private int id;
 
-    public CreditCard(int id, String creditCardHolderName, String creditCardNumber, String creditCardExpiry, String creditCardCVV) {
-        super(id);
-        this.creditCardHolderName = creditCardHolderName;
-        this.creditCardNumber = creditCardNumber;
-        this.creditCardExpiry = creditCardExpiry;
-        this.creditCardCVV = creditCardCVV;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public CreditCard( ) {
     }
 
     public String getCreditCardNumber() {
@@ -57,6 +61,6 @@ public class CreditCard  extends Entity {
 
     @Override
     public void renderMany(RenderService renderer) {
-        renderer.renderCredentialMany(this.getId(), this.creditCardHolderName, this.creditCardNumber,  "[card]");
+        renderer.renderCredentialMany(this.getId(), this.getCreditCardHolderName(), this.creditCardNumber,  "[card]");
     }
 }
