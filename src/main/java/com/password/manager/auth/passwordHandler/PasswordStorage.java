@@ -1,5 +1,7 @@
 package com.password.manager.auth.passwordHandler;
 
+import com.password.manager.utils.Helpers;
+
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 import java.io.*;
@@ -32,6 +34,7 @@ public class PasswordStorage {
         // Save salt and hash to file
         Files.createDirectories(Paths.get(PASSWORD_FILE).getParent());
         try (FileOutputStream fos = new FileOutputStream(PASSWORD_FILE)) {
+            Helpers.Logger("Saving master password to " + PASSWORD_FILE, "INFO");
             fos.write(salt);
             fos.write(hash);
         }
