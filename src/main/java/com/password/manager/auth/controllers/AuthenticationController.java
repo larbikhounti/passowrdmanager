@@ -29,14 +29,14 @@ public class AuthenticationController {
     private void handleLoginButtonAction(ActionEvent event) throws IOException {
         if (authenticationService.login(passwordField.getText())) {
             Helpers.labelHandler(feedbackLabel, "Login successful! Redirecting...", "GREEN", true);
-
-            Helpers.delayer(2, () -> {
-                try {
-                    Helpers.switchScene(event, "/com/password/manager/auth/dashboard_view.fxml");
-                } catch (IOException e) {
-                    Helpers.Logger("Scene switch error: " + e.getMessage(), "ERROR");
-                }
-            });
+            Helpers.switchScene(event, "/com/password/manager/auth/dashboard_view.fxml");
+//            Helpers.delayer(2, () -> {
+//                try {
+//                    Helpers.switchScene(event, "/com/password/manager/auth/dashboard_view.fxml");
+//                } catch (IOException e) {
+//                    Helpers.Logger("Scene switch error: " + e.getMessage(), "ERROR");
+//                }
+//            });
 
         } else {
             Helpers.labelHandler(feedbackLabel, "Login failed. Please try again.", "RED", true);
