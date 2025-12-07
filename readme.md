@@ -1,0 +1,31 @@
+CREATE TABLE credential (
+id NUMBER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+type VARCHAR2(50) NOT NULL CHECK (type IN ('password', 'credit_card', 'note'))
+);
+
+CREATE TABLE emails (
+id NUMBER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+credential_id NUMBER NOT NULL,
+url      VARCHAR2(255) NOT NULL,
+email    VARCHAR2(255) NOT NULL,
+password VARCHAR2(255) NOT NULL,
+FOREIGN KEY (credential_id) REFERENCES credential(id) ON DELETE CASCADE
+);
+
+CREATE TABLE credit_cards (
+id NUMBER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+credential_id NUMBER NOT NULL,
+card_number      VARCHAR2(50) NOT NULL,
+card_expiry      VARCHAR2(10) NOT NULL,
+card_cvv         VARCHAR2(10) NOT NULL,
+card_holder_name VARCHAR2(100) NOT NULL,
+FOREIGN KEY (credential_id) REFERENCES credential(id) ON DELETE CASCADE
+);
+
+CREATE TABLE notes (
+id NUMBER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+credential_id NUMBER NOT NULL,
+title VARCHAR2(255),
+note  VARCHAR2(500),
+FOREIGN KEY (credential_id) REFERENCES credential(id) ON DELETE CASCADE
+);
