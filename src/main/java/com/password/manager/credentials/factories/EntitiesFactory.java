@@ -6,19 +6,15 @@ import com.password.manager.credentials.entities.Email;
 import com.password.manager.credentials.entities.Note;
 
 public class EntitiesFactory {
-    private static int idCounter = -1;
-    public static Note Note(String title, String note) {
-        ++idCounter;
-        return new Note(idCounter, title, note);
+    public static Note Note() {
+        return new Note();
     }
 
-    public static Email Email(String url, String email, String password) {
-        ++idCounter;
-        return new Email(idCounter, url, email, password);
+    public static Email Email() {
+        return new Email();
     }
 
-    public static CreditCard CreditCard(String HolderName, String cardNumber, String expirationDate, String cvv) {
-        ++idCounter;
-        return new CreditCard(idCounter, HolderName, cardNumber, expirationDate, cvv);
+    public static CreditCard CreditCard() {
+        return new CreditCard();
     }
 }
