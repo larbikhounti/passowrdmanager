@@ -37,7 +37,7 @@ public class RenderService {
 
         item.setOnMouseClicked(e -> {
             Entity credential = Entity.credentials.stream()
-                    .filter(c -> c.getId() == id)
+                    .filter(c -> 1 == id)
                     .findFirst()
                     .orElse(null);
 
@@ -66,7 +66,7 @@ public class RenderService {
     }
 
     public void renderCredentialsOne(Entity credential) {
-        Helpers.Logger("Rendering credential details for id: " + credential.getId(), "INFO");
+        Helpers.Logger("Rendering credential details for id: " + 1, "INFO");
         // we need to render the credential details in the credentialContainer but first we need to clear it
         // and we need to show the in textFields the data from the credential
         // we have 3 types of credentials: email, note and credit card
@@ -151,7 +151,10 @@ public class RenderService {
         updateButton.setStyle("-fx-background-color: #3a3a3a; -fx-text-fill: white; -fx-padding: 10 20; -fx-cursor: hand;");
         updateButton.setOnAction(e -> {
             try {
-                Email updatedEmail = EntitiesFactory.Email(urlField.getText(), emailField.getText(), passwordField.getText());
+                Email updatedEmail = EntitiesFactory.Email();
+                updatedEmail.setUrl(urlField.getText());
+                updatedEmail.setEmail(emailField.getText());
+                updatedEmail.setPassword(passwordField.getText());
                 Objects.requireNonNull(StrategiesFactory.getStrategy(credential)).editCredential(credential.getId() , updatedEmail);
                 Helpers.Logger("Update button clicked for credential id: " + credential.getId(), "INFO");
                 Helpers.showAlert("Success", "Email updated successfully!", Alert.AlertType.INFORMATION);
@@ -199,7 +202,9 @@ public class RenderService {
         updateButton.setStyle("-fx-background-color: #3a3a3a; -fx-text-fill: white; -fx-padding: 10 20; -fx-cursor: hand;");
         updateButton.setOnAction(e -> {
             try{
-                Note updateNote = EntitiesFactory.Note(titleField.getText(), noteTextArea.getText());
+                Note updateNote = EntitiesFactory.Note();
+                updateNote.setTitle(titleField.getText());
+                updateNote.setNote(noteTextArea.getText());
                 Objects.requireNonNull(StrategiesFactory.getStrategy(credential)).editCredential(credential.getId() , updateNote);
                 Helpers.Logger("Update button clicked for credential id: " + credential.getId(), "INFO");
                 Helpers.showAlert("Success", "Note updated successfully!", Alert.AlertType.INFORMATION);
@@ -276,7 +281,12 @@ public class RenderService {
         updateButton.setStyle("-fx-background-color: #3a3a3a; -fx-text-fill: white; -fx-padding: 10 20; -fx-cursor: hand;");
         updateButton.setOnAction(e -> {
             try {
-                CreditCard updatedCreditCard = EntitiesFactory.CreditCard(holderField.getText(), numberField.getText(), expiryField.getText(), cvvField.getText());
+                CreditCard updatedCreditCard = EntitiesFactory.CreditCard();
+                updatedCreditCard.setCreditCardHolderName(holderField.getText());
+                updatedCreditCard.setCreditCardNumber(numberField.getText());
+                updatedCreditCard.setCreditCardExpiry(expiryField.getText());
+                updatedCreditCard.setCreditCardCVV(cvvField.getText());
+                
                 Objects.requireNonNull(StrategiesFactory.getStrategy(credential)).editCredential(credential.getId() , updatedCreditCard);
                 Helpers.Logger("Update button clicked for credential id: " + credential.getId(), "INFO");
                 Helpers.showAlert("Success", "Credit card updated successfully!", Alert.AlertType.INFORMATION);
