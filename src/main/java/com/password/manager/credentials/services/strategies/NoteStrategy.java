@@ -3,27 +3,24 @@ package com.password.manager.credentials.services.strategies;
 import com.password.manager.credentials.base.Entity;
 import com.password.manager.credentials.contracts.ICredential;
 import com.password.manager.credentials.entities.Note;
+import com.password.manager.credentials.repositories.NoteRepository;
 
 import java.util.ArrayList;
 
 public class NoteStrategy implements ICredential {
+    NoteRepository noteRepository;
 
     public NoteStrategy() {
+        this.noteRepository = new NoteRepository();
     }
     @Override
     public boolean addCredential(Entity credential) {
-        boolean result =  Entity.credentials.add(credential);
-        for (Entity c : Entity.credentials) {
-            if (c == null) continue;
-            if (!( c instanceof Note noteEntity))  continue;
-            System.out.printf("id is %d title is %s note %s \n", noteEntity.getId(), noteEntity.getTitle(), noteEntity.getNote());
-        }
-        return result;
+      return  this.noteRepository.addCredential(credential);
     }
 
     @Override
     public boolean editCredential(int id, Entity credential) {
-        return false;
+        return this.noteRepository.editCredential(id, credential);
     }
 
     @Override
@@ -33,11 +30,11 @@ public class NoteStrategy implements ICredential {
 
     @Override
     public Entity getCredential(int id) {
-        return null;
+        return this.noteRepository.getCredential(id);
     }
 
     @Override
     public ArrayList<Entity> getAllCredentials() {
-        return null;
+        return this.noteRepository.getAllCredentials();
     }
 }
