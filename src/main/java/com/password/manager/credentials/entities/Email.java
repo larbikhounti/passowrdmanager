@@ -7,12 +7,17 @@ public class Email extends Entity {
     private String url;
     private String email;
     private String password;
+    private int id;
 
-    public Email(int id, String url, String email, String password) {
-        super(id);
-        this.url = url;
-        this.email = email;
-        this.password = password;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+    public Email() {
     }
 
     public String getUrl() {
@@ -46,6 +51,6 @@ public class Email extends Entity {
 
     @Override
     public void renderMany(RenderService renderer) {
-        renderer.renderCredentialMany(this.getId(), this.email, this.password, "[Email]");
+        renderer.renderCredentialMany(this.getId(), this.getEmail(), this.getPassword(), "[Email]");
     }
 }
