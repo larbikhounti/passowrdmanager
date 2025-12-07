@@ -21,6 +21,17 @@
             <artifactId>javafx-fxml</artifactId>
             <version>23.0.1</version>
         </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-graphics</artifactId>
+            <version>23.0.1</version>
+            <classifier>mac</classifier>
+        </dependency>
+        <dependency>
+            <groupId>com.oracle.database.jdbc</groupId>
+            <artifactId>ojdbc11</artifactId>
+            <version>23.5.0.0</version>
+        </dependency>
     </dependencies>
 
     <profiles>
@@ -72,11 +83,11 @@
                     <classifier>mac</classifier>
                 </dependency>
                 <dependency>
-                    <groupId>org.openjfx</groupId>
-                    <artifactId>javafx-graphics</artifactId>
-                    <version>23.0.1</version>
-                    <classifier>mac</classifier>
+                    <groupId>com.oracle.database.jdbc</groupId>
+                    <artifactId>ojdbc11</artifactId>
+                    <version>23.5.0.0</version>
                 </dependency>
+
                 <dependency>
                     <groupId>org.openjfx</groupId>
                     <artifactId>javafx-controls</artifactId>
