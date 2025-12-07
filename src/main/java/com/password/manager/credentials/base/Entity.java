@@ -6,20 +6,12 @@ import com.password.manager.credentials.services.RenderService;
 import java.util.ArrayList;
 
 public abstract class Entity {
-    private int id;
+
     public static ArrayList<Entity> credentials = new ArrayList<>();
+    public static final int NOTE = 1;
+    public static final int EMAIL = 2;
+    public static final int CREDIT_CARD = 3;
 
-    public Entity(int id) {
-        this.id = id;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
 
     public abstract void render(RenderService renderer);
     public abstract void renderMany(RenderService renderer);
