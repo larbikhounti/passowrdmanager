@@ -1,6 +1,8 @@
 package com.password.manager;
 
 import com.password.manager.auth.passwordHandler.PasswordStorage;
+import com.password.manager.credentials.seeds.CredentialSeeder;
+import com.password.manager.utils.DbConnector;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -18,6 +20,13 @@ public class App extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
+        if (!DbConnector.checkConnection()) {
+            System.out.println("Unable to connect to the database. Exiting application.");
+            System.exit(1);
+        }else {
+            System.out.println("Database connection established successfully.");
+            CredentialSeeder.seedCredentialTypes();
+        }
         if(PasswordStorage.isMasterPasswordSet()){
             scene = new Scene(loadFXML("auth/authentication_view"), 640, 480);
         }else{
