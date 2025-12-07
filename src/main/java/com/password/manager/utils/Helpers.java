@@ -1,6 +1,7 @@
 package com.password.manager.utils;
 
 
+import com.password.manager.credentials.base.Entity;
 import javafx.animation.PauseTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
