@@ -7,21 +7,12 @@ public class Note extends Entity {
 
     private String title;
     private String note;
-    private int id;
 
     public Note() {
     }
 
     public String getTitle() {
         return title;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public void setTitle(String title) {
@@ -43,6 +34,6 @@ public class Note extends Entity {
 
     @Override
     public void renderMany(RenderService renderer) {
-        renderer.renderCredentialMany(this.getId(), this.title, this.note, "[Note]");
+        renderer.renderCredentialMany(this.getId(), this.title, this.note, "[Note]", this);
     }
 }
