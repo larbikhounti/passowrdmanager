@@ -7,16 +7,7 @@ public class Email extends Entity {
     private String url;
     private String email;
     private String password;
-    private int id;
 
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
     public Email() {
     }
 
@@ -51,6 +42,6 @@ public class Email extends Entity {
 
     @Override
     public void renderMany(RenderService renderer) {
-        renderer.renderCredentialMany(this.getId(), this.getEmail(), this.getPassword(), "[Email]");
+        renderer.renderCredentialMany(this.getId(), this.getEmail(), this.getPassword(), "[Email]", this);
     }
 }
