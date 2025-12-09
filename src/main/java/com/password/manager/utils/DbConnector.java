@@ -21,7 +21,7 @@ public class DbConnector  {
 
     private static void createConnection() throws SQLException {
         connection = DriverManager.getConnection(
-                "jdbc:oracle:thin:@//192.168.1.8:1521/xe",
+                "jdbc:oracle:thin:@//192.168.2.22:1521/xe",
                 "system", "123456");
     }
 
