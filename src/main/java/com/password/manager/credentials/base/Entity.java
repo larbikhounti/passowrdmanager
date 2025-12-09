@@ -11,6 +11,14 @@ public abstract class Entity {
     public static final int NOTE = 1;
     public static final int EMAIL = 2;
     public static final int CREDIT_CARD = 3;
+    private int id;
+
+    public int getId() {
+        return id;
+    }
+    public void setId(int id) {
+        this.id = id;
+    }
 
 
     public abstract void render(RenderService renderer);
