@@ -12,20 +12,26 @@ import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Objects;
+
+import static java.util.Arrays.stream;
 
 public class RenderService {
 
 
     private final VBox credentialsContainer;
     private final VBox credentialContainer;
+    private final CredentialsService credentialsService;
 
     public RenderService(VBox credentialsContainer, VBox credentialContainer) {
         this.credentialsContainer = credentialsContainer;
         this.credentialContainer = credentialContainer;
+        this.credentialsService = new CredentialsService();
     }
 
-    public void renderCredentialMany(int id, String title, String subtitle, String iconText) {
+    public void renderCredentialMany(int id, String title, String subtitle, String iconText, Entity type) {
 
         Helpers.Logger("Adding credential: site=" + title + ", username=" + subtitle, "INFO");
 
@@ -36,16 +42,18 @@ public class RenderService {
         item.setId(String.valueOf(id));
 
         item.setOnMouseClicked(e -> {
-            Entity credential = Entity.credentials.stream()
-                    .filter(c -> 1 == id)
-                    .findFirst()
-                    .orElse(null);
-
-            if (credential != null) {
-                renderCredentialsOne(credential);
-            } else {
-                Helpers.Logger("Credential not found: " + id, "WARN");
+            try {
+                for (Entity cred : this.credentialsService.getCredentials()) {
+                    if (cred.getId() == id && cred.getClass().equals(type.getClass())) {
+                            renderCredentialsOne(cred);
+                            break;
+                    }
+                }
+                Helpers.Logger("Id clicked is : " + id, "INFO");
+            } catch (SQLException ex) {
+                throw new RuntimeException(ex);
             }
+
         });
 
         Label icon = new Label(iconText);
@@ -67,9 +75,6 @@ public class RenderService {
 
     public void renderCredentialsOne(Entity credential) {
         Helpers.Logger("Rendering credential details for id: " + 1, "INFO");
-        // we need to render the credential details in the credentialContainer but first we need to clear it
-        // and we need to show the in textFields the data from the credential
-        // we have 3 types of credentials: email, note and credit card
         this.credentialContainer.getChildren().clear();
 
         credential.render(this);
@@ -80,10 +85,7 @@ public class RenderService {
 
     public void renderEmailCredential(Email credential) {
         Helpers.Logger("Rendering email credential", "INFO");
-
-
-
-
+        Helpers.Logger("Credential ID: " + credential.getId(), "INFO");
         VBox container = new VBox(15);
         container.setStyle("-fx-padding: 20;");
 
