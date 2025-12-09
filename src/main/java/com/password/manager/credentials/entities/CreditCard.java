@@ -8,18 +8,9 @@ public class CreditCard  extends Entity {
     private  String creditCardExpiry;
     private  String creditCardCVV;
     private  String creditCardHolderName;
-    private int id;
-
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
 
     public CreditCard( ) {
+        super();
     }
 
     public String getCreditCardNumber() {
@@ -61,6 +52,6 @@ public class CreditCard  extends Entity {
 
     @Override
     public void renderMany(RenderService renderer) {
-        renderer.renderCredentialMany(this.getId(), this.getCreditCardHolderName(), this.creditCardNumber,  "[card]");
+        renderer.renderCredentialMany(this.getId(), this.getCreditCardHolderName(), this.creditCardNumber,  "[card]", this);
     }
 }
