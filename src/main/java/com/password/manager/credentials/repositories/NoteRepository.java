@@ -99,6 +99,7 @@ public class NoteRepository implements ICredential {
             Statement stmt =  connection.createStatement();
             String sql = "SELECT * FROM notes";
             var resultSet = stmt.executeQuery(sql);
+
             while (resultSet.next()) {
                 Note note = EntitiesFactory.Note();
                 note.setId(resultSet.getInt("id"));
