@@ -1,5 +1,7 @@
 package com.password.manager.utils;
 
+import javafx.scene.control.Alert;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -14,14 +16,14 @@ public class DbConnector  {
                 createConnection();
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            Helpers.showAlert("Database Connection Error", "Unable to connect to the database: " + e.getMessage(), Alert.AlertType.ERROR);
         }
         return connection;
     }
 
     private static void createConnection() throws SQLException {
         connection = DriverManager.getConnection(
-                "jdbc:oracle:thin:@//192.168.2.22:1521/xe",
+                "jdbc:oracle:thin:@//192.168.1.8:1521/xe",
                 "system", "123456");
     }
 
