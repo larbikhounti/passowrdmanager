@@ -7,12 +7,12 @@ import com.password.manager.credentials.entities.Note;
 import com.password.manager.credentials.services.CredentialsService;
 import com.password.manager.credentials.services.RenderService;
 import com.password.manager.utils.Helpers;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 
-import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.ArrayList;
 
 public class DashboardService {
     private final Label emailsCredentialCount;
@@ -21,7 +21,7 @@ public class DashboardService {
     private final Label totalCredentialsCount;
     private final RenderService renderService;
     private  final CredentialsService credentialsService;
-    private ArrayList<Entity> credentials;
+    private ObservableList<Entity> credentials = FXCollections.observableArrayList();
 
     public DashboardService(VBox credentialsContainer,
                             VBox credentialContainer,
@@ -38,37 +38,37 @@ public class DashboardService {
 
     }
 
+
+    private void loadCredentials() throws SQLException {
+        credentials.setAll(credentialsService.getCredentials());
+    }
+
+    private void refreshUI() {
+
+        for (Entity credential : credentials) {
+            credential.renderMany(renderService);
+        }
+
+        emailsCredentialCount.setText(
+                String.valueOf(credentials.stream().filter(c -> c instanceof Email).count())
+        );
+
+        notesCredentialCount.setText(
+                String.valueOf(credentials.stream().filter(c -> c instanceof Note).count())
+        );
+
+        creditCardCredentialCount.setText(
+                String.valueOf(credentials.stream().filter(c -> c instanceof CreditCard).count())
+        );
+
+        totalCredentialsCount.setText(String.valueOf(credentials.size()));
+    }
+
+
     public void initializeDashboard() {
         try {
-            credentials = this.credentialsService.getCredentials();
-            for (Entity credential : credentials) {
-                credential.renderMany(renderService);
-            }
-            emailsCredentialCount.setText(
-                    String.valueOf(
-                            this.credentials.stream()
-                                    .filter(c -> c instanceof Email)
-                                    .count()
-                    )
-            );
-            notesCredentialCount.setText(
-                    String.valueOf(
-                            this.credentials.stream()
-                                    .filter(c -> c instanceof Note)
-                                    .count()
-                    )
-            );
-
-            creditCardCredentialCount.setText(
-                    String.valueOf(
-                            this.credentials.stream()
-                                    .filter(c -> c instanceof CreditCard)
-                                    .count()
-                    )
-            );
-
-            totalCredentialsCount.setText(String.valueOf(this.credentials.size()));
-
+            loadCredentials();
+            refreshUI();
         } catch (NullPointerException e) {
             Helpers.Logger("No credential service found: " + e.getMessage(), "ERROR");
         } catch (SQLException e) {
