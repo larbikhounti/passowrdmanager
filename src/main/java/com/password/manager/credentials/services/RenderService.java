@@ -6,6 +6,7 @@ import com.password.manager.credentials.entities.Email;
 import com.password.manager.credentials.entities.Note;
 import com.password.manager.credentials.factories.EntitiesFactory;
 import com.password.manager.credentials.factories.StrategiesFactory;
+import com.password.manager.dashboard.services.DashboardService;
 import com.password.manager.utils.Helpers;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
@@ -25,10 +26,12 @@ public class RenderService {
     private final VBox credentialContainer;
     private final CredentialsService credentialsService;
 
+
     public RenderService(VBox credentialsContainer, VBox credentialContainer) {
         this.credentialsContainer = credentialsContainer;
         this.credentialContainer = credentialContainer;
         this.credentialsService = new CredentialsService();
+
     }
 
     public void renderCredentialMany(int id, String title, String subtitle, String iconText, Entity type) {
@@ -76,11 +79,7 @@ public class RenderService {
     public void renderCredentialsOne(Entity credential) {
         Helpers.Logger("Rendering credential details for id: " + 1, "INFO");
         this.credentialContainer.getChildren().clear();
-
         credential.render(this);
-
-
-
     }
 
     public void renderEmailCredential(Email credential) {
@@ -149,27 +148,43 @@ public class RenderService {
                 passwordLabel, passwordField, passwordTextField,
                 idField
         );
-        Button updateButton = new Button("Update Email Credential");
-        updateButton.setStyle("-fx-background-color: #3a3a3a; -fx-text-fill: white; -fx-padding: 10 20; -fx-cursor: hand;");
-        updateButton.setOnAction(e -> {
-            try {
-                Email updatedEmail = EntitiesFactory.Email();
-                updatedEmail.setUrl(urlField.getText());
-                updatedEmail.setEmail(emailField.getText());
-                updatedEmail.setPassword(passwordField.getText());
-                Objects.requireNonNull(StrategiesFactory.getStrategy(credential)).editCredential(credential.getId() , updatedEmail);
-                Helpers.Logger("Update button clicked for credential id: " + credential.getId(), "INFO");
-                Helpers.showAlert("Success", "Email updated successfully!", Alert.AlertType.INFORMATION);
+
+
+        this.credentialContainer.getChildren().add(container);
+
+            this.renderButton("Update Email Credential", "-fx-background-color: #3a3a3a; -fx-text-fill: white; -fx-padding: 10 20; -fx-cursor: hand;", () -> {
+                try {
+                    Email updatedEmail = EntitiesFactory.Email();
+                    updatedEmail.setUrl(urlField.getText());
+                    updatedEmail.setEmail(emailField.getText());
+                    updatedEmail.setPassword(passwordField.getText());
+                    Objects.requireNonNull(StrategiesFactory.getStrategy(credential)).editCredential(credential.getId() , updatedEmail);
+                    Helpers.Logger("Update button clicked for credential id: " + credential.getId(), "INFO");
+                    Helpers.showAlert("Success", "Email updated successfully!", Alert.AlertType.INFORMATION);
+                } catch (Exception ex) {
+                    Helpers.Logger("Error updating email credential: " + ex.getMessage(), "ERROR");
+                    Helpers.showAlert("Error", "Error updating email credential", Alert.AlertType.ERROR);
+                }
+            });
+
+            this.renderButton("Delete Email Credential", "-fx-background-color: #FF0000;-fx-text-fill: white;-fx-padding: 10 20;-fx-cursor: hand;", () -> {
+                try {
+                    Objects.requireNonNull(StrategiesFactory.getStrategy(credential)).removeCredential(credential.getId());
+                    Helpers.Logger("Delete button clicked for credential id: " + credential.getId(), "INFO");
+                    Helpers.showAlert("Success", "Email deleted successfully!", Alert.AlertType.INFORMATION);
+                this.credentialContainer.getChildren().clear();
+                this.credentialsContainer.getChildren().clear();
+
             } catch (Exception ex) {
-                Helpers.Logger("Error updating email credential: " + ex.getMessage(), "ERROR");
-                Helpers.showAlert("Error", "Error updating email credential", Alert.AlertType.ERROR);
+                Helpers.Logger("Error deleting email credential: " + ex.getMessage(), "ERROR");
+                Helpers.showAlert("Error", "Error deleting email credential", Alert.AlertType.ERROR);
             }
         });
 
-        this.credentialContainer.getChildren().add(container);
-        this.credentialContainer.getChildren().add(updateButton);
 
     }
+
+
 
     public void renderNoteCredential(Note credential) {
         Helpers.Logger("Rendering note credential", "INFO");
@@ -199,10 +214,9 @@ public class RenderService {
                 titleLabel, titleField,
                 noteLabel, noteTextArea
         );
+        this.credentialContainer.getChildren().add(container);
 
-        Button updateButton = new Button("Update Note Credential");
-        updateButton.setStyle("-fx-background-color: #3a3a3a; -fx-text-fill: white; -fx-padding: 10 20; -fx-cursor: hand;");
-        updateButton.setOnAction(e -> {
+        this.renderButton("Update Note Credential", "-fx-background-color: #3a3a3a; -fx-text-fill: white; -fx-padding: 10 20; -fx-cursor: hand;", () -> {
             try{
                 Note updateNote = EntitiesFactory.Note();
                 updateNote.setTitle(titleField.getText());
@@ -215,10 +229,27 @@ public class RenderService {
                 Helpers.showAlert("Error", "Error updating note credential", Alert.AlertType.ERROR);
             }
         });
+         this.renderButton("Delete Note Credential", "-fx-background-color: #FF0000;-fx-text-fill: white;-fx-padding: 10 20;-fx-cursor: hand;", () -> {
+            try {
+                Objects.requireNonNull(StrategiesFactory.getStrategy(credential)).removeCredential(credential.getId());
+                Helpers.Logger("Delete button clicked for credential id: " + credential.getId(), "INFO");
+                Helpers.showAlert("Success", "Note deleted successfully!", Alert.AlertType.INFORMATION);
+                this.credentialContainer.getChildren().clear();
+                this.credentialsContainer.getChildren().clear();
 
 
-        this.credentialContainer.getChildren().add(container);
-        this.credentialContainer.getChildren().add(updateButton);
+            } catch (Exception ex) {
+                Helpers.Logger("Error deleting note credential: " + ex.getMessage(), "ERROR");
+                Helpers.showAlert("Error", "Error deleting note credential", Alert.AlertType.ERROR);
+            }
+        });
+
+
+
+
+
+
+
     }
 
     public void renderCreditCardCredential(CreditCard credential) {
@@ -279,16 +310,17 @@ public class RenderService {
             cvvField.setVisible(true);
             cvvField.setManaged(true);
         });
-        Button updateButton = new Button("Update CreditCard Credential");
-        updateButton.setStyle("-fx-background-color: #3a3a3a; -fx-text-fill: white; -fx-padding: 10 20; -fx-cursor: hand;");
-        updateButton.setOnAction(e -> {
+
+        this.credentialContainer.getChildren().add(container);
+
+        this.renderButton("Update Credit Card Credential", "-fx-background-color: #3a3a3a; -fx-text-fill: white; -fx-padding: 10 20; -fx-cursor: hand;", () -> {
             try {
                 CreditCard updatedCreditCard = EntitiesFactory.CreditCard();
                 updatedCreditCard.setCreditCardHolderName(holderField.getText());
                 updatedCreditCard.setCreditCardNumber(numberField.getText());
                 updatedCreditCard.setCreditCardExpiry(expiryField.getText());
                 updatedCreditCard.setCreditCardCVV(cvvField.getText());
-                
+
                 Objects.requireNonNull(StrategiesFactory.getStrategy(credential)).editCredential(credential.getId() , updatedCreditCard);
                 Helpers.Logger("Update button clicked for credential id: " + credential.getId(), "INFO");
                 Helpers.showAlert("Success", "Credit card updated successfully!", Alert.AlertType.INFORMATION);
@@ -298,16 +330,31 @@ public class RenderService {
             }
 
         });
-
+        this.renderButton("Delete Credit Card Credential", "-fx-background-color: #FF0000;-fx-text-fill: white;-fx-padding: 10 20;-fx-cursor: hand;", () -> {
+            try {
+                Objects.requireNonNull(StrategiesFactory.getStrategy(credential)).removeCredential(credential.getId());
+                Helpers.Logger("Delete button clicked for credential id: " + credential.getId(), "INFO");
+                Helpers.showAlert("Success", "Credit card deleted successfully!", Alert.AlertType.INFORMATION);
+                this.credentialContainer.getChildren().clear();
+                this.credentialsContainer.getChildren().clear();
+            } catch (Exception ex) {
+                Helpers.Logger("Error deleting credit card credential: " + ex.getMessage(), "ERROR");
+                Helpers.showAlert("Error", "Error deleting credit card credential", Alert.AlertType.ERROR);
+                }
+        });
         container.getChildren().addAll(
                 holderLabel, holderField,
                 numberLabel, numberField,
                 expiryLabel, expiryField,
                 cvvLabel, cvvField, cvvTextField
         );
+    }
 
-        this.credentialContainer.getChildren().add(container);
-        this.credentialContainer.getChildren().add(updateButton);
+    private void renderButton(String buttonText, String style, Runnable action) {
+        Button button = new Button(buttonText);
+        button.setStyle(style);
+        button.setOnAction(e -> action.run());
+        this.credentialContainer.getChildren().add(button);
     }
 
 }
