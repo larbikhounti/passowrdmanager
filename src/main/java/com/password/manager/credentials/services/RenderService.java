@@ -4,7 +4,6 @@ import com.password.manager.credentials.base.Entity;
 import com.password.manager.credentials.entities.CreditCard;
 import com.password.manager.credentials.entities.Email;
 import com.password.manager.credentials.entities.Note;
-import com.password.manager.credentials.factories.EntitiesFactory;
 import com.password.manager.credentials.factories.StrategiesFactory;
 import com.password.manager.dashboard.services.DashboardService;
 import com.password.manager.utils.Helpers;
@@ -25,13 +24,27 @@ public class RenderService {
     private final VBox credentialsContainer;
     private final VBox credentialContainer;
     private final CredentialsService credentialsService;
+    private DashboardService dashboardService;
 
 
-    public RenderService(VBox credentialsContainer, VBox credentialContainer) {
+    public RenderService(
+            VBox credentialsContainer,
+            VBox credentialContainer,
+            DashboardService dashboardService,
+            CredentialsService credentialsService) {
         this.credentialsContainer = credentialsContainer;
         this.credentialContainer = credentialContainer;
-        this.credentialsService = new CredentialsService();
+        this.credentialsService = credentialsService;
+        this.dashboardService = dashboardService;
 
+    }
+
+    public void clearCredentialsContainer() {
+        this.credentialsContainer.getChildren().clear();
+    }
+
+    public void clearCredentialContainer() {
+        this.credentialContainer.getChildren().clear();
     }
 
     public void renderCredentialMany(int id, String title, String subtitle, String iconText, Entity type) {
@@ -154,16 +167,18 @@ public class RenderService {
 
             this.renderButton("Update Email Credential", "-fx-background-color: #3a3a3a; -fx-text-fill: white; -fx-padding: 10 20; -fx-cursor: hand;", () -> {
                 try {
-                    Email updatedEmail = EntitiesFactory.Email();
+                    Email updatedEmail = new Email();
                     updatedEmail.setUrl(urlField.getText());
                     updatedEmail.setEmail(emailField.getText());
                     updatedEmail.setPassword(passwordField.getText());
                     Objects.requireNonNull(StrategiesFactory.getStrategy(credential)).editCredential(credential.getId() , updatedEmail);
                     Helpers.Logger("Update button clicked for credential id: " + credential.getId(), "INFO");
-                    Helpers.showAlert("Success", "Email updated successfully!", Alert.AlertType.INFORMATION);
+                    // Helpers.showAlert.*
+                    this.credentialsContainer.getChildren().clear();
+                    dashboardService.initializeDashboard();
                 } catch (Exception ex) {
                     Helpers.Logger("Error updating email credential: " + ex.getMessage(), "ERROR");
-                    Helpers.showAlert("Error", "Error updating email credential", Alert.AlertType.ERROR);
+                    // Helpers.showAlert.*
                 }
             });
 
@@ -171,13 +186,14 @@ public class RenderService {
                 try {
                     Objects.requireNonNull(StrategiesFactory.getStrategy(credential)).removeCredential(credential.getId());
                     Helpers.Logger("Delete button clicked for credential id: " + credential.getId(), "INFO");
-                    Helpers.showAlert("Success", "Email deleted successfully!", Alert.AlertType.INFORMATION);
+                    // Helpers.showAlert.*
                 this.credentialContainer.getChildren().clear();
                 this.credentialsContainer.getChildren().clear();
+                dashboardService.initializeDashboard();
 
             } catch (Exception ex) {
                 Helpers.Logger("Error deleting email credential: " + ex.getMessage(), "ERROR");
-                Helpers.showAlert("Error", "Error deleting email credential", Alert.AlertType.ERROR);
+                // Helpers.showAlert.*
             }
         });
 
@@ -218,29 +234,31 @@ public class RenderService {
 
         this.renderButton("Update Note Credential", "-fx-background-color: #3a3a3a; -fx-text-fill: white; -fx-padding: 10 20; -fx-cursor: hand;", () -> {
             try{
-                Note updateNote = EntitiesFactory.Note();
+                Note updateNote = new Note();
                 updateNote.setTitle(titleField.getText());
                 updateNote.setNote(noteTextArea.getText());
                 Objects.requireNonNull(StrategiesFactory.getStrategy(credential)).editCredential(credential.getId() , updateNote);
                 Helpers.Logger("Update button clicked for credential id: " + credential.getId(), "INFO");
-                Helpers.showAlert("Success", "Note updated successfully!", Alert.AlertType.INFORMATION);
+                // Helpers.showAlert.*
+                this.credentialsContainer.getChildren().clear();
+                dashboardService.initializeDashboard();
             } catch (Exception ex) {
                 Helpers.Logger("Error updating note credential: " + ex.getMessage(), "ERROR");
-                Helpers.showAlert("Error", "Error updating note credential", Alert.AlertType.ERROR);
+                // Helpers.showAlert.*
             }
         });
          this.renderButton("Delete Note Credential", "-fx-background-color: #FF0000;-fx-text-fill: white;-fx-padding: 10 20;-fx-cursor: hand;", () -> {
             try {
                 Objects.requireNonNull(StrategiesFactory.getStrategy(credential)).removeCredential(credential.getId());
                 Helpers.Logger("Delete button clicked for credential id: " + credential.getId(), "INFO");
-                Helpers.showAlert("Success", "Note deleted successfully!", Alert.AlertType.INFORMATION);
+                // Helpers.showAlert.*
                 this.credentialContainer.getChildren().clear();
                 this.credentialsContainer.getChildren().clear();
-
+                dashboardService.initializeDashboard();
 
             } catch (Exception ex) {
                 Helpers.Logger("Error deleting note credential: " + ex.getMessage(), "ERROR");
-                Helpers.showAlert("Error", "Error deleting note credential", Alert.AlertType.ERROR);
+                // Helpers.showAlert.*
             }
         });
 
@@ -315,7 +333,7 @@ public class RenderService {
 
         this.renderButton("Update Credit Card Credential", "-fx-background-color: #3a3a3a; -fx-text-fill: white; -fx-padding: 10 20; -fx-cursor: hand;", () -> {
             try {
-                CreditCard updatedCreditCard = EntitiesFactory.CreditCard();
+                CreditCard updatedCreditCard = new CreditCard();
                 updatedCreditCard.setCreditCardHolderName(holderField.getText());
                 updatedCreditCard.setCreditCardNumber(numberField.getText());
                 updatedCreditCard.setCreditCardExpiry(expiryField.getText());
@@ -323,10 +341,12 @@ public class RenderService {
 
                 Objects.requireNonNull(StrategiesFactory.getStrategy(credential)).editCredential(credential.getId() , updatedCreditCard);
                 Helpers.Logger("Update button clicked for credential id: " + credential.getId(), "INFO");
-                Helpers.showAlert("Success", "Credit card updated successfully!", Alert.AlertType.INFORMATION);
+                // Helpers.showAlert.*
+                this.credentialsContainer.getChildren().clear();
+                dashboardService.initializeDashboard();
             } catch (Exception ex) {
                 Helpers.Logger("Error updating credit card credential: " + ex.getMessage(), "ERROR");
-                Helpers.showAlert("Error", "Error updating credit card credential", Alert.AlertType.ERROR);
+                // Helpers.showAlert.*
             }
 
         });
@@ -334,12 +354,13 @@ public class RenderService {
             try {
                 Objects.requireNonNull(StrategiesFactory.getStrategy(credential)).removeCredential(credential.getId());
                 Helpers.Logger("Delete button clicked for credential id: " + credential.getId(), "INFO");
-                Helpers.showAlert("Success", "Credit card deleted successfully!", Alert.AlertType.INFORMATION);
+                // Helpers.showAlert.*
                 this.credentialContainer.getChildren().clear();
                 this.credentialsContainer.getChildren().clear();
+                dashboardService.initializeDashboard();
             } catch (Exception ex) {
                 Helpers.Logger("Error deleting credit card credential: " + ex.getMessage(), "ERROR");
-                Helpers.showAlert("Error", "Error deleting credit card credential", Alert.AlertType.ERROR);
+                // Helpers.showAlert.*
                 }
         });
         container.getChildren().addAll(
