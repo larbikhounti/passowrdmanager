@@ -6,6 +6,7 @@ import com.password.manager.auth.services.AuthenticationService;
 import com.password.manager.utils.Helpers;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 
@@ -28,7 +29,8 @@ public class AuthenticationController {
     @FXML
     private void handleLoginButtonAction(ActionEvent event) throws IOException {
         if (authenticationService.login(passwordField.getText())) {
-            Helpers.labelHandler(feedbackLabel, "Login successful! Redirecting...", "GREEN", true);
+            //Helpers.labelHandler(feedbackLabel, "Login successful! Redirecting...", "GREEN", true);
+            Helpers.showAlert("Login Successful", "You have been logged in successfully.", AlertType.INFORMATION);
             Helpers.switchScene(event, "/com/password/manager/auth/dashboard_view.fxml");
 //            Helpers.delayer(2, () -> {
 //                try {
@@ -39,7 +41,8 @@ public class AuthenticationController {
 //            });
 
         } else {
-            Helpers.labelHandler(feedbackLabel, "Login failed. Please try again.", "RED", true);
+            Helpers.showAlert("Login Failed", "Login failed. Please try again.", AlertType.ERROR);
+           // Helpers.labelHandler(feedbackLabel, "Login failed. Please try again.", "RED", true);
         }
     }
 }
