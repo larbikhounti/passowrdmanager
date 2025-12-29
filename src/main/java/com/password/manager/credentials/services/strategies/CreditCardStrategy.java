@@ -10,9 +10,10 @@ import java.util.ArrayList;
 public class CreditCardStrategy implements ICredential {
     CreditCardRepository creditCardRepository;
 
-    public CreditCardStrategy() {
-        this.creditCardRepository = new CreditCardRepository();
+    public CreditCardStrategy(CreditCardRepository creditCardRepository) {
+        this.creditCardRepository = creditCardRepository;
     }
+    
     @Override
     public boolean addCredential(Entity credential) {
         return this.creditCardRepository.addCredential(credential);
