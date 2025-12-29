@@ -4,7 +4,6 @@ import com.password.manager.credentials.base.Entity;
 import com.password.manager.credentials.entities.CreditCard;
 import com.password.manager.credentials.entities.Email;
 import com.password.manager.credentials.entities.Note;
-import com.password.manager.credentials.factories.EntitiesFactory;
 import com.password.manager.utils.DbConnector;
 
 import java.sql.Connection;
@@ -52,31 +51,42 @@ public class CredetialsRepository {
                             """;
             ResultSet rs = stm.executeQuery(sql);
             while (rs.next()) {
-                switch (rs.getInt("credential_id")) {
+                switch (rs.getString("credential_type")) {
                     case NOTE -> {
-                        // create Note entity
-                        Note note = EntitiesFactory.Note();
-                        note.setId(rs.getInt("note_id"));
-                        note.setTitle(rs.getString("title"));
-                        note.setNote(rs.getString("note"));
-                        credentials.add(note);
+                        // Only add note if it has actual data (not NULL from LEFT JOIN)
+                        if (rs.getObject("note_id") != null) {
+                            Note note = new Note();
+                            note.setId(rs.getInt("note_id"));
+                            note.setTitle(rs.getString("title"));
+                            note.setNote(rs.getString("note"));
+                            System.out.println("Note ID: " + note.getId());
+                            System.out.println("Note Title: " + note.getTitle());
+                            System.out.println("Note Content: " + note.getNote());
+                            credentials.add(note);
+                        }
                     }
                     case EMAIL -> {
-                        Email email = EntitiesFactory.Email();
-                        email.setId(rs.getInt("email_id"));
-                        email.setEmail(rs.getString("email"));
-                        email.setUrl(rs.getString("url"));
-                        email.setPassword(rs.getString("password"));
-                        credentials.add(email);
+                        // Only add email if it has actual data (not NULL from LEFT JOIN)
+                        if (rs.getObject("email_id") != null) {
+                            Email email = new Email();
+                            email.setId(rs.getInt("email_id"));
+                            email.setEmail(rs.getString("email"));
+                            email.setUrl(rs.getString("url"));
+                            email.setPassword(rs.getString("password"));
+                            credentials.add(email);
+                        }
                     }
                     case CREDIT_CARD -> {
-                        CreditCard creditCard = EntitiesFactory.CreditCard();
-                        creditCard.setId(rs.getInt("credit_id"));
-                        creditCard.setCreditCardHolderName(rs.getString("card_holder_name"));
-                        creditCard.setCreditCardNumber(rs.getString("card_number"));
-                        creditCard.setCreditCardExpiry(rs.getString("card_expiry"));
-                        creditCard.setCreditCardCVV(rs.getString("card_cvv"));
-                        credentials.add(creditCard);
+                        // Only add credit card if it has actual data (not NULL from LEFT JOIN)
+                        if (rs.getObject("credit_id") != null) {
+                            CreditCard creditCard = new CreditCard();
+                            creditCard.setId(rs.getInt("credit_id"));
+                            creditCard.setCreditCardHolderName(rs.getString("card_holder_name"));
+                            creditCard.setCreditCardNumber(rs.getString("card_number"));
+                            creditCard.setCreditCardExpiry(rs.getString("card_expiry"));
+                            creditCard.setCreditCardCVV(rs.getString("card_cvv"));
+                            credentials.add(creditCard);
+                        }
                     }
                     default -> {
                     }
