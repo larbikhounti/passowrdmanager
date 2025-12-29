@@ -1,5 +1,6 @@
 package com.password.manager.dashboard.controllers;
 
+import com.password.manager.credentials.services.CredentialsService;
 import com.password.manager.dashboard.services.DashboardService;
 import com.password.manager.utils.Helpers;
 import javafx.event.ActionEvent;
@@ -21,18 +22,21 @@ public class DashboardController {
     private Label noteCredentialCount;
     @FXML
     private Label creditCardCredentialCount;
+
     @FXML
     private Label totalCredentialsCount;
 
     @FXML
     public void initialize() {
+        CredentialsService credentialsService = new CredentialsService();
         DashboardService dashboardService = new DashboardService(
                 credentialsContainer,
                 credentialContainer,
                 emailsCredentialCount,
                 noteCredentialCount,
                 creditCardCredentialCount,
-                totalCredentialsCount);
+                totalCredentialsCount,
+                credentialsService);
         dashboardService.initializeDashboard();
     }
 
