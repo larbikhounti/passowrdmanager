@@ -16,9 +16,7 @@ import java.util.Base64;
 public class PasswordStorage {
 
     // Store master password file in user's home directory
-    private static final String PASSWORD_FILE = System.getProperty("user.home") +
-                                                File.separator + ".passowrdmanager" +
-                                                File.separator + "master.dat";
+    private static final String PASSWORD_FILE = "./master.dat";
     private static final int ITERATIONS = 65536;
     private static final int KEY_LENGTH = 256;
 
