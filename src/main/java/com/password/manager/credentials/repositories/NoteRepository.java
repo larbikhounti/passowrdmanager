@@ -3,7 +3,6 @@ package com.password.manager.credentials.repositories;
 import com.password.manager.credentials.base.Entity;
 import com.password.manager.credentials.contracts.ICredential;
 import com.password.manager.credentials.entities.Note;
-import com.password.manager.credentials.factories.EntitiesFactory;
 import com.password.manager.utils.DbConnector;
 import com.password.manager.utils.Helpers;
 import javafx.scene.control.Alert;
@@ -35,7 +34,7 @@ public class NoteRepository implements ICredential {
                 );
                 stmt.executeQuery(sql);
             } catch (SQLException e) {
-                throw new RuntimeException(e);
+                Helpers.showAlert("Database Error", "Unable to add note. " + e.getMessage(), Alert.AlertType.ERROR);
             }
             return false;
         }
@@ -54,7 +53,7 @@ public class NoteRepository implements ICredential {
                 );
                 stmt.executeQuery(sql);
             } catch (SQLException e) {
-                throw new RuntimeException(e);
+                Helpers.showAlert("Database Error", "Unable to edit note. " + e.getMessage(), Alert.AlertType.ERROR);
             }
             return false;
         }
@@ -67,10 +66,11 @@ public class NoteRepository implements ICredential {
             Statement stmt =  connection.createStatement();
             String sql = String.format("DELETE FROM notes WHERE id = %d", id);
             stmt.executeQuery(sql);
+            return true;
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            Helpers.showAlert("Database Error", "Unable to remove email. " + e.getMessage(), Alert.AlertType.ERROR);
+            return false;
         }
-        return false;
     }
 
     @Override
@@ -80,14 +80,14 @@ public class NoteRepository implements ICredential {
             String sql = String.format("SELECT * FROM notes WHERE id = %d", id);
             var resultSet = stmt.executeQuery(sql);
             if (resultSet.next()) {
-                Note note = EntitiesFactory.Note();
+                Note note = new Note();
                 note.setId(resultSet.getInt("id"));
                 note.setTitle(resultSet.getString("title"));
                 note.setNote(resultSet.getString("note"));
                 return note;
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            Helpers.showAlert("Database Error", "Unable to get note. " + e.getMessage(), Alert.AlertType.ERROR);
         }
         return null;
     }
@@ -101,14 +101,14 @@ public class NoteRepository implements ICredential {
             var resultSet = stmt.executeQuery(sql);
 
             while (resultSet.next()) {
-                Note note = EntitiesFactory.Note();
+                Note note = new Note();
                 note.setId(resultSet.getInt("id"));
                 note.setTitle(resultSet.getString("title"));
                 note.setNote(resultSet.getString("note"));
                 notes.add(note);
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            Helpers.showAlert("Database Error", "Unable to get notes. " + e.getMessage(), Alert.AlertType.ERROR);
         }
         return notes;
     }
