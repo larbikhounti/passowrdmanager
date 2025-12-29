@@ -5,6 +5,7 @@ import com.password.manager.credentials.base.Entity;
 import java.util.ArrayList;
 
 public interface ICredential {
+    // add credential returns  true if successful, false  accepting an object of type Entity
     boolean addCredential(Entity credential);
 
     boolean editCredential(int id, Entity credential);
