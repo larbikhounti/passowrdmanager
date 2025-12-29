@@ -34,6 +34,6 @@ public class Note extends Entity {
 
     @Override
     public void renderMany(RenderService renderer) {
-        renderer.renderCredentialMany(this.getId(), this.title, this.note, "[Note]", this);
+        renderer.renderCredentialMany(this.getId(), this.getTitle(), this.getNote(), "[Note]", this);
     }
 }
