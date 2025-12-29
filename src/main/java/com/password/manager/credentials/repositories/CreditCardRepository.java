@@ -4,7 +4,6 @@ import com.password.manager.credentials.base.Entity;
 import com.password.manager.credentials.contracts.ICredential;
 import com.password.manager.credentials.entities.CreditCard;
 import com.password.manager.credentials.entities.Email;
-import com.password.manager.credentials.factories.EntitiesFactory;
 import com.password.manager.utils.DbConnector;
 import com.password.manager.utils.Helpers;
 import javafx.scene.control.Alert;
@@ -100,7 +99,7 @@ public class CreditCardRepository implements ICredential {
             String sql = String.format("SELECT * FROM emails WHERE id = %d", id);
             ResultSet resultSet = stmt.executeQuery(sql);
             if (resultSet.next()) {
-                CreditCard creditCard = EntitiesFactory.CreditCard();
+                CreditCard creditCard = new CreditCard();
                 creditCard.setId(resultSet.getInt("id"));
                 creditCard.setCreditCardNumber(resultSet.getString("card_number"));
                 creditCard.setCreditCardExpiry(resultSet.getString("card_expiry"));
@@ -122,7 +121,7 @@ public class CreditCardRepository implements ICredential {
             String sql = "SELECT * FROM credit_cards";
             ResultSet resultSet = stmt.executeQuery(sql);
             while (resultSet.next()) {
-                CreditCard creditCard = EntitiesFactory.CreditCard();
+                CreditCard creditCard = new CreditCard();
                 creditCard.setId(resultSet.getInt("id"));
                 creditCard.setCreditCardNumber(resultSet.getString("card_number"));
                 creditCard.setCreditCardExpiry(resultSet.getString("card_expiry"));
