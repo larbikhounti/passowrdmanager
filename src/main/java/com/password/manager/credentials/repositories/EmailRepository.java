@@ -3,7 +3,6 @@ package com.password.manager.credentials.repositories;
 import com.password.manager.credentials.base.Entity;
 import com.password.manager.credentials.contracts.ICredential;
 import com.password.manager.credentials.entities.Email;
-import com.password.manager.credentials.factories.EntitiesFactory;
 import com.password.manager.utils.DbConnector;
 import com.password.manager.utils.Helpers;
 import javafx.scene.control.Alert;
@@ -87,7 +86,7 @@ public class EmailRepository implements ICredential {
             String sql = String.format("SELECT * FROM emails WHERE id = %d", id);
             ResultSet resultSet = stmt.executeQuery(sql);
             if (resultSet.next()) {
-                Email email = EntitiesFactory.Email();
+                Email email = new Email();
                 email.setId(resultSet.getInt("id"));
                 email.setUrl(resultSet.getString("url"));
                 email.setEmail(resultSet.getString("email"));
@@ -108,7 +107,7 @@ public class EmailRepository implements ICredential {
             String sql = "SELECT * FROM emails";
             ResultSet resultSet = stmt.executeQuery(sql);
             while (resultSet.next()) {
-                Email email = EntitiesFactory.Email();
+                Email email = new Email();
                 email.setId(resultSet.getInt("id"));
                 email.setUrl(resultSet.getString("url"));
                 email.setEmail(resultSet.getString("email"));
