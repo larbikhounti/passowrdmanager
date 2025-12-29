@@ -10,8 +10,8 @@ import java.util.ArrayList;
 public class EmailStrategy implements ICredential {
     EmailRepository emailRepository;
 
-    public EmailStrategy() {
-        this.emailRepository = new EmailRepository();
+    public EmailStrategy(EmailRepository emailRepository) {
+        this.emailRepository = emailRepository;
     }
 
     @Override
