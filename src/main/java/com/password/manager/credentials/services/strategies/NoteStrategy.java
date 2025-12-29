@@ -10,8 +10,8 @@ import java.util.ArrayList;
 public class NoteStrategy implements ICredential {
     NoteRepository noteRepository;
 
-    public NoteStrategy() {
-        this.noteRepository = new NoteRepository();
+    public NoteStrategy(NoteRepository noteRepository) {
+        this.noteRepository = noteRepository;
     }
     @Override
     public boolean addCredential(Entity credential) {
@@ -25,7 +25,7 @@ public class NoteStrategy implements ICredential {
 
     @Override
     public boolean removeCredential(int id) {
-        return false;
+        return this.noteRepository.removeCredential(id);
     }
 
     @Override
