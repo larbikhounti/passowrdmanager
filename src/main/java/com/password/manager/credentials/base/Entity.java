@@ -7,10 +7,9 @@ import java.util.ArrayList;
 
 public abstract class Entity {
 
-    public static ArrayList<Entity> credentials = new ArrayList<>();
-    public static final int NOTE = 1;
-    public static final int EMAIL = 2;
-    public static final int CREDIT_CARD = 3;
+    public static final String NOTE = "note";
+    public static final String EMAIL = "password";
+    public static final String CREDIT_CARD = "credit_card";
     private int id;
 
     public int getId() {
