@@ -13,6 +13,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class DashboardService {
@@ -23,6 +24,7 @@ public class DashboardService {
     private final RenderService renderService;
     private  final CredentialsService credentialsService;
     private ObservableList<Entity> credentials = FXCollections.observableArrayList();
+    private String currentSearchQuery = "";
 
     public DashboardService(VBox credentialsContainer,
                             VBox credentialContainer,
@@ -46,13 +48,59 @@ public class DashboardService {
         credentials.setAll(credentialsService.getCredentials());
     }
 
+    public void searchCredentials(String searchQuery) {
+        this.currentSearchQuery = searchQuery;
+        refreshUI();
+        Helpers.Logger("Search query: " + searchQuery, "INFO");
+    }
+
+    private List<Entity> getFilteredCredentials() {
+        String searchQuery = currentSearchQuery.trim().toLowerCase();
+
+        if (searchQuery.isEmpty()) {
+            return new ArrayList<>(credentials);
+        }
+
+        List<Entity> filtered = new ArrayList<>();
+        for (Entity credential : credentials) {
+            if (matchesSearchQuery(credential, searchQuery)) {
+                filtered.add(credential);
+            }
+        }
+        return filtered;
+    }
+
+    private boolean matchesSearchQuery(Entity credential, String query) {
+        if (credential instanceof Email email) {
+            return matchesField(email.getUrl(), query) ||
+                   matchesField(email.getEmail(), query) ||
+                   matchesField(email.getPassword(), query);
+        } else if (credential instanceof Note note) {
+            return matchesField(note.getTitle(), query) ||
+                   matchesField(note.getNote(), query);
+        } else if (credential instanceof CreditCard card) {
+            return matchesField(card.getCreditCardHolderName(), query) ||
+                   matchesField(card.getCreditCardNumber(), query) ||
+                   matchesField(card.getCreditCardExpiry(), query) ||
+                   matchesField(card.getCreditCardCVV(), query);
+        }
+        return false;
+    }
+
+    private boolean matchesField(String fieldValue, String query) {
+        return fieldValue != null && fieldValue.toLowerCase().contains(query);
+    }
+
     private void refreshUI() {
         // Clear both containers before re-rendering
         renderService.clearCredentialsContainer();
         renderService.clearCredentialContainer();
 
+        // Get filtered credentials based on search query
+        List<Entity> allCredentials = getFilteredCredentials();
+
         // Filter out credentials with null/empty required fields
-        List<Entity> validCredentials = credentials.stream()
+        List<Entity> validCredentials = allCredentials.stream()
                 .filter(this::hasValidData)
                 .toList();
 
