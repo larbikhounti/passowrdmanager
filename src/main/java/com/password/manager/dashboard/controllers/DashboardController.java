@@ -27,9 +27,14 @@ public class DashboardController {
     private Label totalCredentialsCount;
 
     @FXML
+    private TextField searchTextField;
+
+    private DashboardService dashboardService;
+
+    @FXML
     public void initialize() {
         CredentialsService credentialsService = new CredentialsService();
-        DashboardService dashboardService = new DashboardService(
+        dashboardService = new DashboardService(
                 credentialsContainer,
                 credentialContainer,
                 emailsCredentialCount,
@@ -38,6 +43,12 @@ public class DashboardController {
                 totalCredentialsCount,
                 credentialsService);
         dashboardService.initializeDashboard();
+    }
+
+    @FXML
+    public void handleSearch() {
+        String searchQuery = searchTextField.getText();
+        dashboardService.searchCredentials(searchQuery);
     }
 
     public void showCreateScene(ActionEvent actionEvent) throws IOException {
