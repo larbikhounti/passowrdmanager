@@ -73,7 +73,10 @@
                         <Region HBox.hgrow="ALWAYS" />
                         <Button onAction="#showCreateScene" text="+" style="-fx-background-color: transparent; -fx-text-fill: #888888; -fx-cursor: hand; -fx-font-size: 20px;" />
                     </HBox>
-                    <TextField promptText="Search" style="-fx-background-color: #1e1e1e; -fx-text-fill: white; -fx-prompt-text-fill: #666666; -fx-background-radius: 5; -fx-border-color: #0066cc; -fx-border-radius: 5; -fx-padding: 8;" />
+                    <HBox spacing="10.0">
+                        <TextField fx:id="searchTextField" promptText="Search" style="-fx-background-color: #1e1e1e; -fx-text-fill: white; -fx-prompt-text-fill: #666666; -fx-background-radius: 5; -fx-border-color: #0066cc; -fx-border-radius: 5; -fx-padding: 8;" HBox.hgrow="ALWAYS" />
+                        <Button text="Search" onAction="#handleSearch" style="-fx-background-color: #0066cc; -fx-text-fill: white; -fx-background-radius: 5; -fx-padding: 8; -fx-cursor: hand;" />
+                    </HBox>
                 </VBox>
             </top>
 
